@@ -23,6 +23,8 @@ namespace ExpeditionsContent {
 
         public static int MoonDebuffTime = 300;
 
+        // Cache BountyBoard tile type from Expeditions mod for Clerk seating functionality
+        internal static int BountyBoardTileType = -1;
 
         public static Texture2D CameraFrameTexture;
 
@@ -30,6 +32,15 @@ namespace ExpeditionsContent {
         {
             npcidclerk = ModContent.NPCType<NPCs.Clerk>();
             itemidphoto = ModContent.ItemType<Items.QuestItems.Photo>();
+
+            // Cache BountyBoard tile type for Clerk seating
+            if (ModLoader.TryGetMod("Expeditions", out Mod expedMod))
+            {
+                if (expedMod.TryFind<ModTile>("BountyBoard", out ModTile bountyBoard))
+                {
+                    BountyBoardTileType = bountyBoard.Type;
+                }
+            }
 
             if (Main.netMode != 2)
             {

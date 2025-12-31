@@ -129,9 +129,9 @@ namespace ExpeditionsContent.Items.QuestItems
 
                 return n;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // Main.NewText("Gen " + Item.stack + ": " + e.ToString());
+                // Exception silently ignored - NPC generation failure returns null
             }
             return null;
         }

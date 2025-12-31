@@ -169,13 +169,12 @@ namespace ExpeditionsContent.NPCs
             {
                 Point point = NPC.Center.ToTileCoordinates();
                 Tile tile = Main.tile[point.X, point.Y];
-                // TODO: BountyBoard type needs to be updated to new Expeditions API
-                // if (tile.TileType == ModContent.TileType<Expeditions.BountyBoard>())
-                // {
-                //     TakeSeat(point, tile);
-                //     NPC.ai[1] = 2; //normally sit around all day
-                // }
-                // else
+                if (ExpeditionC.BountyBoardTileType != -1 && tile.TileType == ExpeditionC.BountyBoardTileType)
+                {
+                    TakeSeat(point, tile);
+                    NPC.ai[1] = 2; //normally sit around all day
+                }
+                else
                 {
                     wasSittingTimer = 0f;
                 }
@@ -213,8 +212,8 @@ namespace ExpeditionsContent.NPCs
                 if (flag61)
                 {
                     Tile tile2 = Main.tile[point2.X, point2.Y];
-                    // TODO: BountyBoard type needs to be updated to new Expeditions API
-                    flag61 = false; // (tile2.TileType == ModContent.TileType<Expeditions.BountyBoard>());
+                    flag61 = (ExpeditionC.BountyBoardTileType != -1 &&
+                              tile2.TileType == ExpeditionC.BountyBoardTileType);
                     // disregard parts with no seat
                     if (tile2.TileFrameY <= 52)
                     {
