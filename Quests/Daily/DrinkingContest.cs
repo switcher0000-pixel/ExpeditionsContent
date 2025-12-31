@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Expeditions;
 using System.Collections.Generic;
@@ -98,7 +99,7 @@ namespace ExpeditionsContent.Quests.Daily
                 cond1 = true;
                 aleCount = 0;
                 expedition.trackingActive = true;
-                player.QuickSpawnItem(ItemID.Ale, 10);
+                player.QuickSpawnItem(player.GetSource_GiftOrReward(), ItemID.Ale, 10);
             }
 
             if (!cond3)

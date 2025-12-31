@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("No Bones About It, 1st ed.");
-            Tooltip.SetDefault("'The spine-tingling sequel to Risen from the Grave'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("No Bones About It, 1st ed.");
+            // Tooltip.SetDefault("'The spine-tingling sequel to Risen from the Grave'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

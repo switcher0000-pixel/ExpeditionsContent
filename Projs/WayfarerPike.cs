@@ -8,32 +8,32 @@ namespace ExpeditionsContent.Projs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Pike");
+            // DisplayName.SetDefault("Pike");
         }
         public override void SetDefaults()
         {
-            projectile.CloneDefaults(ProjectileID.Spear);
-            projectile.width = 14;
-            projectile.height = 14;
-            projectile.scale = 1.1f;
+            Projectile.CloneDefaults(ProjectileID.Spear);
+            Projectile.width = 14;
+            Projectile.height = 14;
+            Projectile.scale = 1.1f;
         }
 
         public const float extend = 0.9f;
         public const float retract = 1.1f;
         public override void AI()
         {
-            if (projectile.ai[0] == 0f)
+            if (Projectile.ai[0] == 0f)
             {
-                projectile.ai[0] = 4f;
-                projectile.netUpdate = true;
+                Projectile.ai[0] = 4f;
+                Projectile.netUpdate = true;
             }
-            if (Main.player[projectile.owner].itemAnimation < Main.player[projectile.owner].itemAnimationMax / 3)
+            if (Main.player[Projectile.owner].itemAnimation < Main.player[Projectile.owner].itemAnimationMax / 3)
             {
-                projectile.ai[0] -= retract;
+                Projectile.ai[0] -= retract;
             }
             else
             {
-                projectile.ai[0] += extend;
+                Projectile.ai[0] += extend;
             }
         }
 

@@ -28,7 +28,7 @@ namespace ExpeditionsContent.Quests.Clerk
             string doctor = NPC.GetFirstNPCNameOrNull(NPCID.WitchDoctor);
             if (doctor != null) doctor = "that weird lihzahrd";
 
-            if(API.FindExpedition<CrystalHeart>(mod).completed)
+            if(API.FindExpedition<CrystalHeart>(Mod).completed)
             {
                 return "I've been chatting with " + guide + ", and we think that with the help of " + doctor + "'s mysterious dark arts, it's possible to make some kind of item that senses the strange fruit growing in the jungle as of late - much like that heart compass from before! We'll need some samples though. That's your job! ";
             }

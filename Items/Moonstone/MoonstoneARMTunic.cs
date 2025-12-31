@@ -10,26 +10,24 @@ namespace ExpeditionsContent.Items.Moonstone
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Yutu Tunic");
-            Tooltip.SetDefault("Provides 1 second of immunity to lava\n"
-                + "10% increased mining speed");
+            // DisplayName.SetDefault("Yutu Tunic");
+            // Tooltip.SetDefault("Provides 1 second of immunity to lava\n" + "10% increased mining speed");
         }
         public override void SetDefaults()
         {
-            item.width = 18;
-            item.height = 18;
-            item.defense = 6;
-            item.rare = 3;
-            item.value = Item.sellPrice(0, 3, 60, 0);
+            Item.width = 18;
+            Item.height = 18;
+            Item.defense = 6;
+            Item.rare = 3;
+            Item.value = Item.sellPrice(0, 3, 60, 0);
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.ItemType<Moonstone>(), 15);
+            Recipe recipe = Recipe.Create(Type);
+            recipe.AddIngredient(ModContent.ItemType<Moonstone>(), 15);
             recipe.AddIngredient(ItemID.Silk, 6);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
         }
 
         public override void UpdateEquip(Player player)
@@ -41,9 +39,9 @@ namespace ExpeditionsContent.Items.Moonstone
             player.lavaMax += 60; // 1 second lava protection
         }
 
-        public override void DrawHands(ref bool drawHands, ref bool drawArms)
-        {
-            drawHands = true;
-        }
+//         public override void DrawHands(ref bool drawHands, ref bool drawArms)
+//         {
+//             drawHands = true;
+//         }
     }
 }

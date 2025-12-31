@@ -8,29 +8,29 @@ namespace ExpeditionsContent.Items.QuestItems
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Prefix Applicator");
-            Tooltip.SetDefault("<right> to use on next favourited accessory");
+            // DisplayName.SetDefault("Prefix Applicator");
+            // Tooltip.SetDefault("<right> to use on next favourited accessory");
         }
         public override void SetDefaults()
         {
-            item.width = 32;
-            item.height = 24;
-            item.consumable = true;
-            item.rare = 0; // Shouldn't be at this value anyway because prefixes
-            item.accessory = true;
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            Item.width = 32;
+            Item.height = 24;
+            Item.consumable = true;
+            Item.rare = 0; // Shouldn't be at this value anyway because prefixes
+            Item.accessory = true;
+            Item.value = Item.sellPrice(0, 1, 0, 0);
         }
 
         Item matchingAccessory = null;
         public override bool CanRightClick()
         {
-            return matchingAccessory != null && item.prefix != 0;
+            return matchingAccessory != null && Item.prefix != 0;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            if (item.prefix == 0)
+            if (Item.prefix == 0)
             {
-                tooltips.Add(new TooltipLine(mod, "ApplyPrefixNull", "Apply to: No prefix to apply"));
+                tooltips.Add(new TooltipLine(Mod, "ApplyPrefixNull", "Apply to: No prefix to apply"));
                 return;
             }
 
@@ -57,24 +57,24 @@ namespace ExpeditionsContent.Items.QuestItems
             }
 
             matchingAccessory = null;
-            tooltips.Add(new TooltipLine(mod, "ApplyPrefixNone", "Apply to: No favourited accessory"));
+            tooltips.Add(new TooltipLine(Mod, "ApplyPrefixNone", "Apply to: No favourited accessory"));
         }
 
         private bool LookForMeAndMatch(ref int myIndex, Item invItem, int i, List<TooltipLine> tooltips)
         {
             if (myIndex == -1)
             {
-                if (invItem.IsTheSameAs(this.item)) { myIndex = i; }
+                if (invItem.type == this.Item.type && invItem.prefix == this.Item.prefix) { myIndex = i; }
             }
             else
             {
                 if (invItem.accessory &&
-                    invItem.type != item.type &&
-                    invItem.prefix != item.prefix &&
+                    invItem.type != Item.type &&
+                    invItem.prefix != Item.prefix &&
                     invItem.favorited)
                 {
                     matchingAccessory = invItem;
-                    tooltips.Add(new TooltipLine(mod, "ApplyPrefixAccessory", "Apply to: " + invItem.Name));
+                    tooltips.Add(new TooltipLine(Mod, "ApplyPrefixAccessory", "Apply to: " + invItem.Name));
                     return true;
                 }
             }
@@ -84,10 +84,10 @@ namespace ExpeditionsContent.Items.QuestItems
         bool consume;
         public override void RightClick(Player player)
         {
-            if (matchingAccessory != null && item.prefix != 0)
+            if (matchingAccessory != null && Item.prefix != 0)
             {
                 // Apply the new prefix
-                matchingAccessory.Prefix(item.prefix);
+                matchingAccessory.Prefix(Item.prefix);
 
                 // Make it obvious it's changed
                 matchingAccessory.favorited = false;

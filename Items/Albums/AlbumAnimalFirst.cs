@@ -9,9 +9,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Terrarian Critters, 1st ed.");
-            Tooltip.SetDefault("'It contains cute animal photos'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
+            // DisplayName.SetDefault("Terrarian Critters, 1st ed.");
+            // Tooltip.SetDefault("'It contains cute animal photos'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
         }
         public override void SetDefaults()
         {
@@ -26,7 +25,7 @@ namespace ExpeditionsContent.Items.Albums
 
         public static void SetDefaultAlbum(ModItem mi, int value, int rare, int placeStyle)
         {
-            Item item = mi.item;
+            Item item = mi.Item;
             item.width = 22;
             item.height = 30;
             item.maxStack = 99;
@@ -35,7 +34,7 @@ namespace ExpeditionsContent.Items.Albums
             item.useStyle = 1;
             item.useAnimation = 15;
             item.useTime = 10;
-            item.createTile = mi.mod.TileType<Tiles.PhotoAlbum>();
+            item.createTile = ModContent.TileType<Tiles.PhotoAlbum>();
             item.placeStyle = placeStyle;
             item.consumable = true;
 
@@ -63,14 +62,12 @@ namespace ExpeditionsContent.Items.Albums
 
         public static void AddCopyRecipes(ModItem mi, int filmCount)
         {
-            Mod mod = mi.mod;
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mi, 1);
-            recipe.AddIngredient(mod.ItemType<CopyPrint>(), 1);
-            recipe.AddIngredient(mod.ItemType<QuestItems.PhotoBlank>(), filmCount);
+            Recipe recipe = Recipe.Create(mi.Type, 2);
+            recipe.AddIngredient(mi.Type, 1);
+            recipe.AddIngredient(ModContent.ItemType<CopyPrint>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<QuestItems.PhotoBlank>(), filmCount);
             recipe.AddTile(TileID.DyeVat);
-            recipe.SetResult(mi, 2);
-            recipe.AddRecipe();
+            recipe.Register();
         }
     }
 }

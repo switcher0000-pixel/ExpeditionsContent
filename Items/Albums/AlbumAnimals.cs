@@ -8,8 +8,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Terrarian Critters, 2nd ed.");
-            Tooltip.SetDefault("'It contains plenty of cute animal photos'");
+            // DisplayName.SetDefault("Terrarian Critters, 2nd ed.");
+            // Tooltip.SetDefault("'It contains plenty of cute animal photos'");
         }
         public override void SetDefaults()
         {

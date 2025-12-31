@@ -27,13 +27,13 @@ namespace ExpeditionsContent.Quests.Core
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return API.FindExpedition<ACUnderground>(mod).completed;
+            return API.FindExpedition<ACUnderground>(Mod).completed;
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             try
-            { cond1 = player.miscEquips[4].type > 0; }
+            { cond1 = player.miscEquips[4].createTile > 0; }
             catch { cond1 = false; }
             return cond1;
         }

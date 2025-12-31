@@ -1,3 +1,4 @@
+using Terraria.GameContent;
 ﻿using System;
 using System.Collections.Generic;
 
@@ -74,7 +75,7 @@ namespace ExpeditionsContent
 
         private static void RecalculatePhotoList()
         {
-            npcPhotos = new bool[Main.npcTexture.Length];
+            npcPhotos = new bool[TextureAssets.Npc.Length];
             CheckInventory();
         }
 

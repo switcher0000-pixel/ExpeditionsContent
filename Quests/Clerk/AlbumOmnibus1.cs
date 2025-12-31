@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -24,13 +25,13 @@ namespace ExpeditionsContent.Quests.Clerk
         }
         public override void AddItemsOnLoad()
         {
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumSlimes>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumWater>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumUndead>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumDemons>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumSlimes>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumWater>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumUndead>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumDemons>());
 
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType<Items.Albums.AlbumPredators>());
+            AddRewardItem(ModContent.ItemType<Items.Albums.AlbumPredators>());
         }
         public override string Description(bool complete)
         {
@@ -43,10 +44,10 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumSlimes>(mod).completed
-                || API.FindExpedition<AlbumWaters>(mod).completed
-                || API.FindExpedition<AlbumUndead>(mod).completed
-                || API.FindExpedition<AlbumDemons>(mod).completed)
+            return (API.FindExpedition<AlbumSlimes>(Mod).completed
+                || API.FindExpedition<AlbumWaters>(Mod).completed
+                || API.FindExpedition<AlbumUndead>(Mod).completed
+                || API.FindExpedition<AlbumDemons>(Mod).completed)
                 || expedition.conditionCounted > 0;
         }
 

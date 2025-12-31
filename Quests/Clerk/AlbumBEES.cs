@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.ID;
 using Expeditions;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace ExpeditionsContent.Quests.Clerk
         public override void AddItemsOnLoad()
         {
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType < Items.Albums.AlbumBee>());
+            AddRewardItem(ModContent.ItemType< Items.Albums.AlbumBee>());
         }
         public override string Description(bool complete)
         {
@@ -53,7 +54,7 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumOmnibus1>(mod).completed)
+            return (API.FindExpedition<AlbumOmnibus1>(Mod).completed)
                 || expedition.conditionCounted > 0;
         }
 

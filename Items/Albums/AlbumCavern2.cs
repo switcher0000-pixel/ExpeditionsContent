@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Cavern Predators, 2nd ed.");
-            Tooltip.SetDefault("'It contains photos of ravenous beasts'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 9, 0, 0)));
+            // DisplayName.SetDefault("Cavern Predators, 2nd ed.");
+            // Tooltip.SetDefault("'It contains photos of ravenous beasts'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 9, 0, 0)));
         }
         public override void SetDefaults()
         {

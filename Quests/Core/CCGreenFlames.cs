@@ -37,7 +37,7 @@ namespace ExpeditionsContent.Quests.Core
             }
 
             // Appears once altar smashing turned in chain starts and corruption world
-            return API.FindExpedition<CBTracingSteps>(mod).completed && (!WorldGen.crimson || cond1);
+            return API.FindExpedition<CBTracingSteps>(Mod).completed && (!WorldGen.crimson || cond1);
         }
     }
 }

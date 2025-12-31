@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Terrarian Monster Almanac, 3rd ed.");
-            Tooltip.SetDefault("'It holds information on monsters across the world'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 80, 0, 0)));
+            // DisplayName.SetDefault("Terrarian Monster Almanac, 3rd ed.");
+            // Tooltip.SetDefault("'It holds information on monsters across the world'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 80, 0, 0)));
         }
         public override void SetDefaults()
         {

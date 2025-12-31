@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Know Your Slimes, 2nd ed.");
-            Tooltip.SetDefault("'Full of random slime trivia!'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("Know Your Slimes, 2nd ed.");
+            // Tooltip.SetDefault("'Full of random slime trivia!'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

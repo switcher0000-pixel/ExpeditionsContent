@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,10 +28,10 @@ namespace ExpeditionsContent
             fallenStarPos = new List<Vector2>();
         }
 
-        public static void DrawFullscreenMap(Mod mod, ref string mouseText)
+        public static void DrawFullscreenMap( ref string mouseText)
         {
             Player player = Main.player[Main.myPlayer];
-            PlayerExplorer px = PlayerExplorer.Get(player, mod);
+            PlayerExplorer px = PlayerExplorer.Get(player);
             if (px.accHeartCompass ||
                 px.accFruitCompass ||
                 px.accShrineMap ||
@@ -126,32 +127,32 @@ namespace ExpeditionsContent
 
         private static void AddHeart(int y, int x, Tile t)
         {
-            if (t.type == TileID.Heart)
+            if (t.TileType == TileID.Heart)
             {
                 // Top Left Corner
-                if (t.frameX == 0 && t.frameY == 0)
+                if (t.TileFrameX == 0 && t.TileFrameY == 0)
                 { heartTiles.Add(new Point(x, y)); }
                 else
                 // Top Right Corner
-                if (t.frameX == 18 && t.frameY == 0)
+                if (t.TileFrameX == 18 && t.TileFrameY == 0)
                 { heartTiles.Add(new Point(x - 1, y)); }
                 else
                 // Bot Left Corner
-                if (t.frameX == 0 && t.frameY == 18)
+                if (t.TileFrameX == 0 && t.TileFrameY == 18)
                 { heartTiles.Add(new Point(x, y - 1)); }
                 else
                 // Bot Right Corner
-                if (t.frameX == 18 && t.frameY == 18)
+                if (t.TileFrameX == 18 && t.TileFrameY == 18)
                 { heartTiles.Add(new Point(x - 1, y - 1)); }
             }
         }
 
         private static void AddFruit(int y, int x, Tile t)
         {
-            if (t.type == TileID.LifeFruit)
+            if (t.TileType == TileID.LifeFruit)
             {
-                bool left = ((t.frameX / 18) % 2 == 0);
-                bool top = ((t.frameY / 18) % 2 == 0);
+                bool left = ((t.TileFrameX / 18) % 2 == 0);
+                bool top = ((t.TileFrameY / 18) % 2 == 0);
                 // Top Left Corner
                 if (left && top)
                 { fruitTiles.Add(new Point(x, y)); }
@@ -174,7 +175,7 @@ namespace ExpeditionsContent
         private static void AddShrine(int y, int x, Tile t)
         {
             // Fake/real sword embedded
-            if (t.type == 186 || t.type == 187)
+            if (t.TileType == 186 || t.TileType == 187)
             {
                 const int realOffsetX = 918;
                 const int realOffsetY = 0;
@@ -186,15 +187,15 @@ namespace ExpeditionsContent
                     {
                         int offsetX = fakeOffsetX;
                         int offsetY = fakeOffsetY;
-                        if(t.type == 187)
+                        if(t.TileType == 187)
                         {
                             offsetX = realOffsetX;
                             offsetY = realOffsetY;
                         }
-                        if (t.frameX == offsetX + width * frameTile &&
-                            t.frameY == offsetY + height * frameTile)
+                        if (t.TileFrameX == offsetX + width * frameTile &&
+                            t.TileFrameY == offsetY + height * frameTile)
                         {
-                            //Main.NewText("Add " + t.type + " at a shrine? " + t.frameX + " & " + t.frameY);
+                            //Main.NewText("Add " + t.TileType + " at a shrine? " + t.TileFrameX + " & " + t.TileFrameY);
                             shrineTiles.Add(new Point(x - width, y - height));
                         }
                     }
@@ -211,10 +212,10 @@ namespace ExpeditionsContent
             Vector2 drawPosition = new Vector2(); ;
             try
             {
-                heart = Main.itemTexture[ItemID.LifeCrystal];
-                fruit = Main.itemTexture[ItemID.LifeFruit];
-                shrine = Main.itemTexture[ItemID.PlatinumShortsword];
-                star = Main.itemTexture[ItemID.FallenStar];
+                heart = TextureAssets.Item[ItemID.LifeCrystal].Value;
+                fruit = TextureAssets.Item[ItemID.LifeFruit].Value;
+                shrine = TextureAssets.Item[ItemID.PlatinumShortsword].Value;
+                star = TextureAssets.Item[ItemID.FallenStar].Value;
                 drawPosition = new Vector2();
             }
             catch (Exception e) { Main.NewTextMultiline("Texture array: " + e.ToString()); }

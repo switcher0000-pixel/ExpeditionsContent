@@ -34,13 +34,13 @@ namespace ExpeditionsContent.Quests.Core
             if (!expedition.completed && Main.hardMode) return false;
 
             // Appears once the second main boss is defeated or turned in
-            return API.FindExpedition<BCBoss2>(mod).completed || NPC.downedBoss2;
+            return API.FindExpedition<BCBoss2>(Mod).completed || NPC.downedBoss2;
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             if (!cond1) cond1 = player.ZoneUnderworldHeight;
-            if (!cond2) cond2 = Main.screenTileCounts[TileID.Hellforge] > 0;
+            if (!cond2) cond2 = player.adjTile[TileID.Hellforge];
             if (!cond3)
             {
                 if (player.armor[0].type == ItemID.MoltenHelmet &&

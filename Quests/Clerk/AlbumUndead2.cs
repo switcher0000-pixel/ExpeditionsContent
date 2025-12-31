@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -26,7 +27,7 @@ namespace ExpeditionsContent.Quests.Clerk
         public override void AddItemsOnLoad()
         {
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType<Items.Albums.AlbumUndead2>());
+            AddRewardItem(ModContent.ItemType<Items.Albums.AlbumUndead2>());
         }
         public override string Description(bool complete)
         {
@@ -55,7 +56,7 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumUndead>(mod).completed)
+            return (API.FindExpedition<AlbumUndead>(Mod).completed)
                 || expedition.conditionCounted > 0;
         }
 

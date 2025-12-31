@@ -33,7 +33,7 @@ namespace ExpeditionsContent.Quests.Core
             // Only appears until first boss is beaten, or is done already
             if (!expedition.completed && NPC.downedBoss1) return false;
 
-            return API.FindExpedition<AAWelcomeQuest>(mod).completed;
+            return API.FindExpedition<AAWelcomeQuest>(Mod).completed;
         }
         
         public override void CheckConditionCountable(Player player, ref int count, int max)

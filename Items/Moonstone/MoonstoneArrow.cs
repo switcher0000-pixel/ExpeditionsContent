@@ -10,26 +10,25 @@ namespace ExpeditionsContent.Items.Moonstone
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Yutu Arrow");
-            Tooltip.SetDefault("Decreases target's defense");
+            // DisplayName.SetDefault("Yutu Arrow");
+            // Tooltip.SetDefault("Decreases target's defense");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.WoodenArrow);
+            Item.CloneDefaults(ItemID.WoodenArrow);
 
-            item.shoot = mod.ProjectileType<Projs.MoonstoneArrow>();
+            Item.shoot = ModContent.ProjectileType<Projs.MoonstoneArrow>();
 
-            item.damage = 9;
-            item.rare = 2;
-            item.value = Item.buyPrice(0, 0, 0, 50);
+            Item.damage = 9;
+            Item.rare = 2;
+            Item.value = Item.buyPrice(0, 0, 0, 50);
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.ItemType<Moonstone>(), 1);
+            Recipe recipe = Recipe.Create(Type);
+            recipe.AddIngredient(ModContent.ItemType<Moonstone>(), 1);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this, 50);
-            recipe.AddRecipe();
+            recipe.Register();
         }
     }
 }

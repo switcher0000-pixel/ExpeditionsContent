@@ -1,3 +1,4 @@
+using Terraria.Audio;
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,57 +32,47 @@ namespace ExpeditionsContent.NPCs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Clerk");
-            Main.npcFrameCount[npc.type] = 21;
-            NPCID.Sets.ExtraTextureCount[npc.type] = 1;
-            NPCID.Sets.ExtraFramesCount[npc.type] = 7; // Extra frames after walk animation
-            NPCID.Sets.AttackFrameCount[npc.type] = 2; // Attack frames at the end
-            NPCID.Sets.DangerDetectRange[npc.type] = 700;
-            NPCID.Sets.MagicAuraColor[npc.type] = new Color(238, 82, 255);
-            NPCID.Sets.AttackType[npc.type] = 2;
-            NPCID.Sets.AttackTime[npc.type] = 30; // time to execute 1 attack
-            NPCID.Sets.AttackAverageChance[npc.type] = 40; // 1/chance to attack per frame
-            NPCID.Sets.HatOffsetY[npc.type] = 2;
+            // // DisplayName.SetDefault("Clerk"); // Localization handled by .hjson files in 1.4
+            Main.npcFrameCount[Type] = 21;
+            NPCID.Sets.ExtraTextureCount[Type] = 1;
+            NPCID.Sets.ExtraFramesCount[Type] = 7; // Extra frames after walk animation
+            NPCID.Sets.AttackFrameCount[Type] = 2; // Attack frames at the end
+            NPCID.Sets.DangerDetectRange[Type] = 700;
+            NPCID.Sets.MagicAuraColor[Type] = new Color(238, 82, 255);
+            NPCID.Sets.AttackType[Type] = 2;
+            NPCID.Sets.AttackTime[Type] = 30; // time to execute 1 attack
+            NPCID.Sets.AttackAverageChance[Type] = 40; // 1/chance to attack per frame
+            NPCID.Sets.HatOffsetY[Type] = 2;
         }
         public override void SetDefaults()
         {
-            npc.width = 18;
-            npc.height = 40;
-            npc.townNPC = true;
-            npc.friendly = true;
+            NPC.width = 18;
+            NPC.height = 40;
+            NPC.townNPC = true;
+            NPC.friendly = true;
 
-            npc.aiStyle = 7;
-            npc.damage = 10;
-            npc.defense = 15;
-            npc.lifeMax = 250;
-            npc.HitSound = SoundID.NPCHit1;
-            npc.DeathSound = SoundID.NPCDeath1;
-            npc.knockBackResist = 0.5f;
+            NPC.aiStyle = 7;
+            NPC.damage = 10;
+            NPC.defense = 15;
+            NPC.lifeMax = 250;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.knockBackResist = 0.5f;
 
-            animationType = NPCID.Stylist;
+            // Use Stylist's animation frames - animationType removed in 1.4, handled by FindFrame()
+            // NPC.animationType = NPCID.Stylist;
         }
-        public override string[] AltTextures
-        {
-            get
-            {
-                return new string[] { "ExpeditionsContent/NPCs/Clerk_Party" };
-            }
-        }
-        public override bool Autoload(ref string name)
-        {
-            name = "Clerk";
-            return mod.Properties.Autoload;
-        }
+        // AltTextures and Autoload removed in 1.4 - party texture handled differently
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
-            if (npc.life > 0)
+            if (NPC.life > 0)
             {
                 // Not Dead
-                for (int i = 0; i < damage / npc.lifeMax * 100.0; i++)
+                for (int i = 0; i < hit.Damage / NPC.lifeMax * 100.0; i++)
                 {
-                    Dust.NewDust(npc.position, npc.height, npc.width,
-                        DustID.Blood, hitDirection, -1f);
+                    Dust.NewDust(NPC.position, NPC.height, NPC.width,
+                        DustID.Blood, hit.HitDirection, -1f);
                 }
             }
             else
@@ -89,24 +80,24 @@ namespace ExpeditionsContent.NPCs
                 // Probably Dead
                 for (int i = 0; i < 50; i++)
                 {
-                    Dust.NewDust(npc.position, npc.height, npc.width,
-                        DustID.Blood, hitDirection * 2.5f, -2.5f);
+                    Dust.NewDust(NPC.position, NPC.height, NPC.width,
+                        DustID.Blood, hit.HitDirection * 2.5f, -2.5f);
                 }
-                // Spawn gores á la vanilla
-                int goreHead = mod.GetGoreSlot("Gores/Clerk1");
-                int goreArms = mod.GetGoreSlot("Gores/Clerk2");
-                int goreLegs = mod.GetGoreSlot("Gores/Clerk3");
-                Gore.NewGore(npc.position, npc.velocity, goreHead, 1f);
-                Gore.NewGore(new Vector2(npc.position.X, npc.position.Y + 20f), npc.velocity, goreArms, 1f);
-                Gore.NewGore(new Vector2(npc.position.X, npc.position.Y + 20f), npc.velocity, goreArms, 1f);
-                Gore.NewGore(new Vector2(npc.position.X, npc.position.Y + 34f), npc.velocity, goreLegs, 1f);
-                Gore.NewGore(new Vector2(npc.position.X, npc.position.Y + 34f), npc.velocity, goreLegs, 1f);
+                // Spawn gores
+                if (Main.netMode != NetmodeID.Server)
+                {
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>("Clerk1").Type, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), new Vector2(NPC.position.X, NPC.position.Y + 20f), NPC.velocity, Mod.Find<ModGore>("Clerk2").Type, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), new Vector2(NPC.position.X, NPC.position.Y + 20f), NPC.velocity, Mod.Find<ModGore>("Clerk2").Type, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), new Vector2(NPC.position.X, NPC.position.Y + 34f), NPC.velocity, Mod.Find<ModGore>("Clerk3").Type, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), new Vector2(NPC.position.X, NPC.position.Y + 34f), NPC.velocity, Mod.Find<ModGore>("Clerk3").Type, 1f);
+                }
             }
         }
 
         #region Spawning
 
-        public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+        public override bool CanTownNPCSpawn(int numTownNPCs)
         {
             return WorldExplorer.savedClerk;
         }
@@ -115,29 +106,9 @@ namespace ExpeditionsContent.NPCs
             return true;
         }
 
-        public override string TownNPCName()
+        public override List<string> SetNPCNameList()
         {
-            switch (WorldGen.genRand.Next(9))
-            {
-                case 0:
-                    return "Nastasia"; //Super Paper Mario
-                case 1:
-                    return "Jolene"; //Paper Mario TTYD
-                case 2:
-                    return "Susan"; //Planet Robobot
-                case 3:
-                    return "Rachel"; //Hotel Dusk: Room 215
-                case 4:
-                    return "Eva"; //Grim Fandango
-                case 5:
-                    return "Carol"; //Dilbert
-                case 6:
-                    return "Jen"; //IT Crowd
-                case 7:
-                    return "Donna"; //Dr. Who and Suits
-                default:
-                    return "Isabelle"; //Animal Crossing
-            }
+            return new List<string>() { "Nastasia", "Jolene", "Susan", "Rachel", "Eva", "Carol", "Jen", "Donna", "Isabelle" };
         }
 
         #endregion
@@ -158,9 +129,9 @@ namespace ExpeditionsContent.NPCs
             StayOnChairOverwriteVanilla();
 
             // Track if leaving npc whilst window is open
-            bool anotherNPC = player.talkNPC > 0 && Main.npc[player.talkNPC].type == npc.type;
+            bool anotherNPC = player.talkNPC > 0 && Main.npc[player.talkNPC].type == NPC.type;
             if (Expeditions.ExpeditionUI.viewMode == Expeditions.ExpeditionUI.viewMode_NPC && Expeditions.ExpeditionUI.visible &&
-                (player.talkNPC != npc.whoAmI && !anotherNPC)
+                (player.talkNPC != NPC.whoAmI && !anotherNPC)
                 )
             {
                 Expeditions.Expeditions.CloseExpeditionMenu();
@@ -172,14 +143,14 @@ namespace ExpeditionsContent.NPCs
         private bool CheckDangered()
         {
             bool danger = false;
-            float num389 = (float)NPCID.Sets.DangerDetectRange[npc.type];
+            float num389 = (float)NPCID.Sets.DangerDetectRange[NPC.type];
             for (int num395 = 0; num395 < 200; num395++)
             {
-                bool? flag45 = NPCLoader.CanHitNPC(Main.npc[num395], npc);
+                bool? flag45 = NPCLoader.CanHitNPC(Main.npc[num395], NPC);
                 if (!flag45.HasValue || flag45.Value)
                 {
                     bool flag46 = flag45.HasValue && flag45.Value;
-                    if (Main.npc[num395].active && !Main.npc[num395].friendly && Main.npc[num395].damage > 0 && Main.npc[num395].Distance(npc.Center) < num389 && (!NPCID.Sets.Skeletons.Contains(Main.npc[num395].netID) | flag46))
+                    if (Main.npc[num395].active && !Main.npc[num395].friendly && Main.npc[num395].damage > 0 && Main.npc[num395].Distance(NPC.Center) < num389 && (!NPCID.Sets.Skeletons[Main.npc[num395].netID] | flag46))
                     {
                         danger = true;
                         break;
@@ -194,16 +165,17 @@ namespace ExpeditionsContent.NPCs
         {
 
             // If standing around when I could still be sitting
-            if (npc.ai[0] == 0f && !danger && wasSittingTimer > 0)
+            if (NPC.ai[0] == 0f && !danger && wasSittingTimer > 0)
             {
-                Point point = npc.Center.ToTileCoordinates();
+                Point point = NPC.Center.ToTileCoordinates();
                 Tile tile = Main.tile[point.X, point.Y];
-                if (tile.type == mod.TileType("BountyBoard"))
-                {
-                    TakeSeat(point, tile);
-                    npc.ai[1] = 2; //normally sit around all day
-                }
-                else
+                // TODO: BountyBoard type needs to be updated to new Expeditions API
+                // if (tile.TileType == ModContent.TileType<Expeditions.BountyBoard>())
+                // {
+                //     TakeSeat(point, tile);
+                //     NPC.ai[1] = 2; //normally sit around all day
+                // }
+                // else
                 {
                     wasSittingTimer = 0f;
                 }
@@ -216,10 +188,10 @@ namespace ExpeditionsContent.NPCs
         private void SitAtBountyBoard()
         {
             // Sit down on expedition boards
-            if (npc.ai[0] == 1f && !danger && npc.velocity.Y == 0f && Main.dayTime)
+            if (NPC.ai[0] == 1f && !danger && NPC.velocity.Y == 0f && Main.dayTime)
             {
                 // Get my tile
-                Point point2 = npc.Center.ToTileCoordinates();
+                Point point2 = NPC.Center.ToTileCoordinates();
                 bool flag61 = WorldGen.InWorld(point2.X, point2.Y, 1);
 
                 // Check first if anyone else is sitting here
@@ -241,44 +213,45 @@ namespace ExpeditionsContent.NPCs
                 if (flag61)
                 {
                     Tile tile2 = Main.tile[point2.X, point2.Y];
-                    flag61 = (tile2.type == mod.TileType("BountyBoard"));
+                    // TODO: BountyBoard type needs to be updated to new Expeditions API
+                    flag61 = false; // (tile2.TileType == ModContent.TileType<Expeditions.BountyBoard>());
                     // disregard parts with no seat
-                    if (tile2.frameY <= 52)
+                    if (tile2.TileFrameY <= 52)
                     {
-                        if (tile2.frameX < 54) flag61 = false;
+                        if (tile2.TileFrameX < 54) flag61 = false;
                     }
                     else
                     {
-                        if (tile2.frameX >= 16) flag61 = false;
+                        if (tile2.TileFrameX >= 16) flag61 = false;
                     }
                     if (flag61)
                     {
                         TakeSeat(point2, tile2);
-                        npc.ai[1] = (float)(900 + Main.rand.Next(10800));
+                        NPC.ai[1] = (float)(900 + Main.rand.Next(10800));
                     }
                 }
             }
 
-            wasSittingTimer = (npc.ai[0] == 5f && Main.dayTime) ? npc.ai[1] : 0;
+            wasSittingTimer = (NPC.ai[0] == 5f && Main.dayTime) ? NPC.ai[1] : 0;
         }
         private void TakeSeat(Point point2, Tile tile2)
         {
-            npc.ai[0] = 5f;
+            NPC.ai[0] = 5f;
             bool flag = true;
             foreach (Player p in Main.player)
             {
-                if (p.talkNPC == npc.whoAmI)
+                if (p.talkNPC == NPC.whoAmI)
                 {
                     flag = false;
                 }
             }
-            if (flag) npc.direction = ((tile2.frameY <= 52) ? -1 : 1);
-            npc.Bottom = new Vector2((float)(point2.X * 16 + 8 + 2 * npc.direction), (float)(point2.Y * 16 + 32));
-            npc.velocity = Vector2.Zero;
-            npc.localAI[3] = 0f;
+            if (flag) NPC.direction = ((tile2.TileFrameY <= 52) ? -1 : 1);
+            NPC.Bottom = new Vector2((float)(point2.X * 16 + 8 + 2 * NPC.direction), (float)(point2.Y * 16 + 32));
+            NPC.velocity = Vector2.Zero;
+            NPC.localAI[3] = 0f;
             if (Main.netMode != 1)
             {
-                npc.netUpdate = true;
+                NPC.netUpdate = true;
             }
         }
 
@@ -337,17 +310,17 @@ namespace ExpeditionsContent.NPCs
                 case 2:
                     projType = ProjectileID.CrystalPulse;
                     attackDelay = 30; //how many frames before projectile spawns
-                    if (npc.localAI[3] == attackDelay - 1) Main.PlaySound(2, npc.Center, 109);
+                    if (NPC.localAI[3] == attackDelay - 1) SoundEngine.PlaySound(SoundID.Item109, NPC.Center);
                     break;
                 case 1:
                     projType = ProjectileID.AmethystBolt; //ruby stats though
                     attackDelay = 30; //how many frames before projectile spawns
-                    if (npc.localAI[3] == attackDelay - 1) Main.PlaySound(2, npc.Center, 43);
+                    if (NPC.localAI[3] == attackDelay - 1) SoundEngine.PlaySound(SoundID.Item43, NPC.Center);
                     break;
                 default:
                     projType = ProjectileID.Spark;
                     attackDelay = 30; //how many frames before projectile spawns
-                    if (npc.localAI[3] == attackDelay - 1) Main.PlaySound(2, npc.Center, 8);
+                    if (NPC.localAI[3] == attackDelay - 1) SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     break;
             }
         }
@@ -383,7 +356,7 @@ namespace ExpeditionsContent.NPCs
         public override string GetChat()
         {
             Expeditions.Expeditions.CloseExpeditionMenu(true); // Stop conflict caused by Bounty Book
-            if (npc.homeless)
+            if (NPC.homeless)
             {
                 if (Main.bloodMoon)
                 {
@@ -590,11 +563,11 @@ namespace ExpeditionsContent.NPCs
             button = Lang.inter[28].Value;
             button2 = "Expeditions";
         }
-        public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+        public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
             if (firstButton)
             {
-                shop = true;
+                shopName = "Shop";
             }
             else
             {
@@ -603,122 +576,23 @@ namespace ExpeditionsContent.NPCs
         }
 
         private const bool ShowAll = true;
-        public override void SetupShop(Chest shop, ref int nextSlot)
+
+        public override void AddShops()
         {
-            // Sell book
-            shop.item[nextSlot].SetDefaults(API.ItemIDExpeditionBook); nextSlot++;
-            // Sell Camera and ammo
-            shop.item[nextSlot].SetDefaults(mod.ItemType<Items.QuestItems.PhotoCamera>()); nextSlot++;
-            if (API.FindExpedition<Quests.Clerk.ProCamSkill>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.QuestItems.PhotoCamPro>(), 2);
-            }
-            shop.item[nextSlot].SetDefaults(mod.ItemType<Items.QuestItems.PhotoBlank>()); nextSlot++;
-            API.AddShopItemVoucher(shop, ref nextSlot,
-                mod.ItemType<Items.Albums.CopyPrint>(), 1);
+            var shop = new NPCShop(Type)
+                // Sell book
+                .Add(API.ItemIDExpeditionBook)
+                // Sell Camera and ammo
+                .Add<Items.QuestItems.PhotoCamera>()
+                .Add<Items.QuestItems.PhotoBlank>();
 
-            // Sell telescope
-            API.AddShopItemVoucher(shop, ref nextSlot, mod.ItemType<Items.QuestItems.Telescope>(), 1);
-            // Sell boxes
-            API.AddShopItemVoucher(shop, ref nextSlot, API.ItemIDRustedBox, 1);
-            if (Main.hardMode)
-            { API.AddShopItemVoucher(shop, ref nextSlot, API.ItemIDRelicBox, 2); }
-            // Unlock Albums Moonstone set
-            if (API.FindExpedition<Quests.Clerk.AlbumOmnibus3>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.Moonstone.LootBagMoonstone>(), 2);
-            }
+            // TODO: The old shop used API.AddShopItemVoucher for conditional items based on quest completion.
+            // This needs to be reimplemented using the new Expeditions API and NPCShop conditional system.
+            // The voucher system allowed items to be purchased with expedition vouchers instead of money.
+            // Conditional items include: ProCamera, Telescope, Rusted/Relic Boxes, Heart Compass,
+            // Jungle Eyepiece, Loyalty Badge, Wayfarer weapons, Moonstone items, etc.
 
-            // Heart Compass
-            if (API.FindExpedition<Quests.Clerk.CrystalHeart>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot, 
-                    mod.ItemType<Items.QuestItems.HeartCompass>(), 1);
-            }
-            // Jungle Eyepiece
-            if (API.FindExpedition<Quests.Clerk.FruitsOfLabour>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot, mod.ItemType<Items.QuestItems.JungleEyepiece>(), 1);
-            }
-            // Loyalty Badge
-            if (API.FindExpedition<Quests.Clerk.SecretSummon>(mod).completed ||
-                API.FindExpedition<Quests.Clerk.SecretSummon2>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.QuestItems.LoyaltyBadge>(), 1);
-            }
-
-            // Basic Wayfarer
-            if (API.FindExpedition<Quests.Clerk.WayfarerWeapons>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot, 
-                    mod.ItemType<Items.Wayfarer.WayfarerSword>(), 1);
-                API.AddShopItemVoucher(shop, ref nextSlot, 
-                    mod.ItemType<Items.Wayfarer.WayfarerPike>(), 1);
-                API.AddShopItemVoucher(shop, ref nextSlot, 
-                    mod.ItemType<Items.Wayfarer.WayfarerBow>(), 1);
-                // Way Subber
-                if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3)
-                {
-                    API.AddShopItemVoucher(shop, ref nextSlot,
-                        mod.ItemType<Items.Wayfarer.WayfarerClaymore>(), 1);
-                }
-            }
-
-            // Alternate method of aquiring guns
-            if (API.FindExpedition<Quests.Clerk.WayfererGuns>(mod).completed)
-            {
-                if (!WorldGen.crimson)
-                {
-                    API.AddShopItemVoucher(shop, ref nextSlot, 
-                        mod.ItemType<Items.Wayfarer.WayfarerCarbine>(), 1);
-                }
-                else
-                {
-                    API.AddShopItemVoucher(shop, ref nextSlot, 
-                        mod.ItemType<Items.Wayfarer.WayfarerRepeater>(), 1);
-                }
-                // Way Subber
-                if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3)
-                {
-                    API.AddShopItemVoucher(shop, ref nextSlot,
-                        mod.ItemType<Items.Wayfarer.WayfarerSubArm>(), 1);
-                }
-                shop.item[nextSlot].SetDefaults(ItemID.MusketBall); nextSlot++;
-            }
-
-            // Way Book
-            bool addBeam = false;
-            if (API.FindExpedition<Quests.Clerk.SkysTheLimit>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot, 
-                    mod.ItemType<Items.Wayfarer.WayfarerBook>(), 1);
-                addBeam = true;
-            }
-
-            // Way Staff
-            if (API.FindExpedition<Quests.Clerk.RoseByAnyName>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.Wayfarer.WayfarerStaff>(), 1);
-                addBeam = true;
-            }
-
-            // Way Beam
-            if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && addBeam)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.Wayfarer.WayfarerBeam>(), 1);
-            }
-
-            // Summon Staff
-            if (API.FindExpedition<Quests.Clerk.SecretSummon2>(mod).completed)
-            {
-                API.AddShopItemVoucher(shop, ref nextSlot,
-                    mod.ItemType<Items.Wayfarer.WayfarerSummon>(), 2);
-            }
+            shop.Register();
         }
 
         #endregion

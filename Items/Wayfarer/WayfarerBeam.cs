@@ -10,26 +10,26 @@ namespace ExpeditionsContent.Items.Wayfarer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wayfarer's Beam");
-            Tooltip.SetDefault("Fires a concentrated beam");
+            // DisplayName.SetDefault("Wayfarer's Beam");
+            // Tooltip.SetDefault("Fires a concentrated beam");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.AquaScepter);
-            item.width = 46;
-            item.height = 16;
-            item.UseSound = SoundID.Item12;
+            Item.CloneDefaults(ItemID.AquaScepter);
+            Item.width = 46;
+            Item.height = 16;
+            Item.UseSound = SoundID.Item12;
 
-            item.mana = 11;
-            item.damage = 30;
-            item.useAnimation = 20;
-            item.useTime = 19;
-            item.knockBack = 2f;
-            item.shoot = mod.ProjectileType<Projs.WayBeam>();
-            item.shootSpeed = 3f;
+            Item.mana = 11;
+            Item.damage = 30;
+            Item.useAnimation = 20;
+            Item.useTime = 19;
+            Item.knockBack = 2f;
+            Item.shoot = ModContent.ProjectileType<Projs.WayBeam>();
+            Item.shootSpeed = 3f;
 
-            item.rare = 2;
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            Item.rare = 2;
+            Item.value = Item.sellPrice(0, 1, 0, 0);
         }
         public override Vector2? HoldoutOffset()
         {

@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Rare Sights, 1st ed.");
-            Tooltip.SetDefault("'It contains wonderful snapshots of rare creatures'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 10, 0, 0)));
+            // DisplayName.SetDefault("Rare Sights, 1st ed.");
+            // Tooltip.SetDefault("'It contains wonderful snapshots of rare creatures'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 10, 0, 0)));
         }
         public override void SetDefaults()
         {

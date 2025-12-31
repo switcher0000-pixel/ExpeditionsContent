@@ -56,11 +56,11 @@ namespace ExpeditionsContent.Quests.Core
             // Appears once any late prehard quest is complete or wall prematurely faced or skeletron
             return
                 NPC.downedBoss2 ||
-                API.FindExpedition<BDJungles>(mod).completed ||
-                API.FindExpedition<BDFossils>(mod).completed ||
-                API.FindExpedition<BDQBee>(mod).completed ||
-                API.FindExpedition<BDDungeonSkell>(mod).completed ||
-                API.FindExpedition<BDHellArmour>(mod).completed ||
+                API.FindExpedition<BDJungles>(Mod).completed ||
+                API.FindExpedition<BDFossils>(Mod).completed ||
+                API.FindExpedition<BDQBee>(Mod).completed ||
+                API.FindExpedition<BDDungeonSkell>(Mod).completed ||
+                API.FindExpedition<BDHellArmour>(Mod).completed ||
                 cond1;
         }
 

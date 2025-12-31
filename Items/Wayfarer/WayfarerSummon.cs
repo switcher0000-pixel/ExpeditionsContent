@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExpeditionsContent.Items.Wayfarer
 {
@@ -15,45 +16,45 @@ namespace ExpeditionsContent.Items.Wayfarer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wayfarer's Bell");
-            Tooltip.SetDefault("Summons a familiar to fight for you");
+            // DisplayName.SetDefault("Wayfarer's Bell");
+            // Tooltip.SetDefault("Summons a familiar to fight for you");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.HornetStaff);
-            item.UseSound = SoundID.Item25;
+            Item.CloneDefaults(ItemID.HornetStaff);
+            Item.UseSound = SoundID.Item25;
             
-            item.damage = 11;
-            item.knockBack = 3f;
-            item.shoot = mod.ProjectileType("MinionFox");
+            Item.damage = 11;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<Projs.Familiars.MinionFox>();
 
             // Create buff that manages the modPlayer's minion bool
-            item.buffType = mod.BuffType("FamiliarMinion");
+            Item.buffType = ModContent.BuffType<Buffs.FamiliarMinion>();
 
-            item.value = Item.buyPrice(0, 10, 0, 0);
-            item.rare = 2;
+            Item.value = Item.buyPrice(0, 10, 0, 0);
+            Item.rare = 2;
 
-            ItemID.Sets.StaffMinionSlotsRequired[item.type] = 1;
+            ItemID.Sets.StaffMinionSlotsRequired[Item.type] = 1;
         }
-        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
         {
-            player.AddBuff(item.buffType, 3600, true);
+            player.AddBuff(Item.buffType, 3600, true);
 
-            int foxes = player.ownedProjectileCounts[mod.ProjectileType("MinionFox")];
-            int chickens = player.ownedProjectileCounts[mod.ProjectileType("MinionChicken")];
-            int cats = player.ownedProjectileCounts[mod.ProjectileType("MinionCat")];
+            int foxes = player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionFox>()];
+            int chickens = player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionChicken>()];
+            int cats = player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionCat>()];
             if (foxes > chickens)
             {
-                type = mod.ProjectileType("MinionChicken");
+                type = ModContent.ProjectileType<Projs.Familiars.MinionChicken>();
             }
             else if (chickens > cats)
             {
-                type = mod.ProjectileType("MinionCat");
+                type = ModContent.ProjectileType<Projs.Familiars.MinionCat>();
             }
             position = Main.MouseWorld - new Vector2(12, 10);
-            speedX = 0f;
-            speedY = 0f;
-            return true;
+            velocity = Vector2.Zero;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockBack, player.whoAmI);
+            return false;
         }
         public override Vector2? HoldoutOffset()
         {

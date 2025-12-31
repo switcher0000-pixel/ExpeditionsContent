@@ -37,9 +37,9 @@ namespace ExpeditionsContent.Quests.Core
 
             // Appears once morning comes after any mech defeated has been turned in
             return cond2 && (
-                API.FindExpedition<DAMechaWorm>(mod).completed ||
-                API.FindExpedition<DAMechaEyes>(mod).completed ||
-                API.FindExpedition<DAMechaPrime>(mod).completed);
+                API.FindExpedition<DAMechaWorm>(Mod).completed ||
+                API.FindExpedition<DAMechaEyes>(Mod).completed ||
+                API.FindExpedition<DAMechaPrime>(Mod).completed);
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

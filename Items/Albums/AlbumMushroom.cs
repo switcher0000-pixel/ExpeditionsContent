@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Dangers of Spore Infestation, 1st ed.");
-            Tooltip.SetDefault("'It contains strange images of mushroom-like foes'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("Dangers of Spore Infestation, 1st ed.");
+            // Tooltip.SetDefault("'It contains strange images of mushroom-like foes'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

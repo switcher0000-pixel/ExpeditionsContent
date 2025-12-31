@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -26,7 +27,7 @@ namespace ExpeditionsContent.Quests.Clerk
         public override void AddItemsOnLoad()
         {
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType<Items.Albums.AlbumAntlion>());
+            AddRewardItem(ModContent.ItemType<Items.Albums.AlbumAntlion>());
         }
         public override string Description(bool complete)
         {
@@ -43,8 +44,8 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (PlayerExplorer.HoldingCamera(mod)
-                && API.FindExpedition<AlbumOmnibus1>(mod).completed)
+            return (PlayerExplorer.HoldingCamera(Mod)
+                && API.FindExpedition<AlbumOmnibus1>(Mod).completed)
                 || expedition.conditionCounted > 0;
         }
 

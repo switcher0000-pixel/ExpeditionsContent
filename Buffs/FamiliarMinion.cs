@@ -6,21 +6,19 @@ namespace ExpeditionsContent.Buffs
 {
     class FamiliarMinion : ModBuff
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Familiar");
-            Description.SetDefault("The familiar will fight for you");
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
         }
-        
+
         public override void Update(Player player, ref int buffIndex)
         {
-            PlayerExplorer modPlayer = player.GetModPlayer<PlayerExplorer>(mod);
+            PlayerExplorer modPlayer = player.GetModPlayer<PlayerExplorer>();
             int minionCount = 0;
-            minionCount += player.ownedProjectileCounts[mod.ProjectileType("MinionFox")];
-            minionCount += player.ownedProjectileCounts[mod.ProjectileType("MinionChicken")];
-            minionCount += player.ownedProjectileCounts[mod.ProjectileType("MinionCat")];
+            minionCount += player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionFox>()];
+            minionCount += player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionChicken>()];
+            minionCount += player.ownedProjectileCounts[ModContent.ProjectileType<Projs.Familiars.MinionCat>()];
             if (minionCount > 0)
             {
                 modPlayer.familiarMinion = true;

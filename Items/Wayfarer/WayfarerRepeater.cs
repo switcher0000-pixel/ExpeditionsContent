@@ -9,21 +9,21 @@ namespace ExpeditionsContent.Items.Wayfarer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wayfarer's Repeater");
+            // DisplayName.SetDefault("Wayfarer's Repeater");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.Musket);
-            item.width = 46;
-            item.height = 20;
+            Item.CloneDefaults(ItemID.Musket);
+            Item.width = 46;
+            Item.height = 20;
 
-            item.damage -= 1;
-            item.useAnimation += 6;
-            item.useTime += 5;
-            item.knockBack += 1.5f;
-            item.shootSpeed += 2f;
+            Item.damage -= 1;
+            Item.useAnimation += 6;
+            Item.useTime += 5;
+            Item.knockBack += 1.5f;
+            Item.shootSpeed += 2f;
 
-            item.value = Item.buyPrice(0, 4, 0, 0);
+            Item.value = Item.buyPrice(0, 4, 0, 0);
         }
         public override Vector2? HoldoutOffset()
         {

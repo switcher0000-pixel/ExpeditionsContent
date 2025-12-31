@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -17,7 +18,7 @@ namespace ExpeditionsContent.Quests.MiscPre
         }
         public override void AddItemsOnLoad()
         {
-            AddDeliverable(mod.ItemType<Items.QuestItems.HeartLocket>(), 1);
+            AddDeliverable(ModContent.ItemType<Items.QuestItems.HeartLocket>(), 1);
 
             AddRewardItem(ItemID.Radar, 1);
         }
@@ -31,7 +32,7 @@ namespace ExpeditionsContent.Quests.MiscPre
             // Makes no sense to display this without the mechanic present now would it?
             if (NPC.FindFirstNPC(NPCID.Mechanic) == -1) return false;
 
-            return API.InInventory[mod.ItemType<Items.QuestItems.HeartLocket>()];
+            return API.InInventory[ModContent.ItemType<Items.QuestItems.HeartLocket>()];
         }
     }
 }

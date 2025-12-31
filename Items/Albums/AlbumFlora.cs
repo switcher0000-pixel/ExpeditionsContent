@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Man-Eating Plants in the Wild, 1st ed.");
-            Tooltip.SetDefault("'It contains pictures and notes on dangerous plants'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("Man-Eating Plants in the Wild, 1st ed.");
+            // Tooltip.SetDefault("'It contains pictures and notes on dangerous plants'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

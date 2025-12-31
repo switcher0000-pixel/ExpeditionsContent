@@ -12,16 +12,14 @@ namespace ExpeditionsContent.Tiles
     {
         public const int tileWidth = 2;
         public const int tileHeight = 3;
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             //extra info
             Main.tileFrameImportant[Type] = true;
             Main.tileLavaDeath[Type] = true;
-            ModTranslation name = CreateMapEntryName();
-            name.SetDefault("Telescope");
-            AddMapEntry(new Color(49, 121, 221), name);
-            dustType = 7;
-            disableSmartCursor = true;
+            AddMapEntry(new Color(49, 121, 221));
+            DustType = 7;
+            // disableSmartCursor removed in 1.4
 
             TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Mannequin, 0));
             TileObjectData.newTile.Width = tileWidth;
@@ -40,9 +38,9 @@ namespace ExpeditionsContent.Tiles
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16,
+            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16,
                 tileWidth * 16, tileHeight * 16,
-                mod.ItemType<Items.QuestItems.Telescope>());
+                ModContent.ItemType<Items.QuestItems.Telescope>());
         }
     }
 }

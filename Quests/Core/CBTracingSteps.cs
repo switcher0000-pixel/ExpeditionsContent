@@ -34,13 +34,13 @@ namespace ExpeditionsContent.Quests.Core
             if (!expedition.completed && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) return false;
 
             // Appears once hardmode quest chain starts
-            return API.FindExpedition<CAHardMode>(mod).completed;
+            return API.FindExpedition<CAHardMode>(Mod).completed;
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            if (!cond1) cond1 = Main.screenTileCounts[TileID.MythrilAnvil] > 0;
-            if (!cond2) cond2 = Main.screenTileCounts[TileID.AdamantiteForge] > 0;
+            if (!cond1) cond1 = player.adjTile[TileID.MythrilAnvil];
+            if (!cond2) cond2 = player.adjTile[TileID.AdamantiteForge];
             if (!cond3)
             {
                 if (player.armor[0].rare >= 4 &&

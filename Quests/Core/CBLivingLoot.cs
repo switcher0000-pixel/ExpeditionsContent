@@ -33,7 +33,7 @@ namespace ExpeditionsContent.Quests.Core
             if (!expedition.completed && NPC.downedPlantBoss) return false;
 
             // Appears once hardmode quest chain starts
-            return API.FindExpedition<CAHardMode>(mod).completed;
+            return API.FindExpedition<CAHardMode>(Mod).completed;
         }
 
         public override void OnKillNPC(NPC npc, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

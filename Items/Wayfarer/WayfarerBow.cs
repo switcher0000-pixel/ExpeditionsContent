@@ -9,17 +9,17 @@ namespace ExpeditionsContent.Items.Wayfarer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wayfarer's Bow");
+            // DisplayName.SetDefault("Wayfarer's Bow");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.GoldBow);
+            Item.CloneDefaults(ItemID.GoldBow);
 
-            item.knockBack += 2f;
-            item.shootSpeed += 3.5f;
+            Item.knockBack += 2f;
+            Item.shootSpeed += 3.5f;
 
-            item.rare = 1;
-            item.value = Item.buyPrice(0, 0, 50, 0);
+            Item.rare = 1;
+            Item.value = Item.buyPrice(0, 0, 50, 0);
         }
     }
 }

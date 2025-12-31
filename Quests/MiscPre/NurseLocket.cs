@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -20,7 +21,7 @@ namespace ExpeditionsContent.Quests.MiscPre
             AddDeliverable(ItemID.GoldCoin);
             AddDeliverable(ItemID.Chain, 2);
 
-            AddRewardItem(mod.ItemType<Items.QuestItems.HeartLocket>(), 1);
+            AddRewardItem(ModContent.ItemType<Items.QuestItems.HeartLocket>(), 1);
         }
         public override string Description(bool complete)
         {

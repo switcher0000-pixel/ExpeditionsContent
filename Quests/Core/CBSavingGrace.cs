@@ -32,7 +32,7 @@ namespace ExpeditionsContent.Quests.Core
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             // Appears once hardmode quest chain starts and tax man not saved yet
-            return (!NPC.savedTaxCollector || cond1) && API.FindExpedition<CAHardMode>(mod).completed;
+            return (!NPC.savedTaxCollector || cond1) && API.FindExpedition<CAHardMode>(Mod).completed;
         }
 
         private const float viewRangeX = 1984f;
@@ -46,7 +46,7 @@ namespace ExpeditionsContent.Quests.Core
                 for (int i = 0; i < 200; i++)
                 {
                     if (Main.npc[i].type != NPCID.DemonTaxCollector) continue;
-                    if (viewRect.Intersects(Main.npc[i].getRect()))
+                    if (viewRect.Intersects(Main.npc[i].Hitbox))
                     {
                         cond1 = true;
                         break;

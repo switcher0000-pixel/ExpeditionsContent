@@ -25,7 +25,7 @@ namespace ExpeditionsContent.Quests.Core
         public override string Description(bool complete)
         {
             string message = "The flying wyverns soaring above can be defeated to harvest their souls. These souls in particular contain power capable of granting flight. ";
-            if (!API.FindExpedition<CBTracingSteps>(mod).condition1Met)
+            if (!API.FindExpedition<CBTracingSteps>(Mod).condition1Met)
             {
                 message += "However, you might not have the facilities to craft this kind of equipment yet. Try exploring some more first. ";
             }
@@ -39,7 +39,7 @@ namespace ExpeditionsContent.Quests.Core
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             // Appears once hardmode quest chain starts
-            return API.FindExpedition<CAHardMode>(mod).completed;
+            return API.FindExpedition<CAHardMode>(Mod).completed;
         }
 
         public override void OnCombatWithNPC(NPC npc, bool playerGotHit, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

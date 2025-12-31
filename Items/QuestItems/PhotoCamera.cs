@@ -1,3 +1,4 @@
+using Terraria.Audio;
 ﻿using System;
 
 using Microsoft.Xna.Framework;
@@ -16,23 +17,22 @@ namespace ExpeditionsContent.Items.QuestItems
         public const float maxFreeCapture = 350; // Max capture distance not relying on light
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("PhotoTron");
-            Tooltip.SetDefault("Takes photos of creatures\n"
-                + "'Say cheese!'");
+            // DisplayName.SetDefault("PhotoTron");
+            // Tooltip.SetDefault("Takes photos of creatures\n" + "'Say cheese!'");
         }
         public override void SetDefaults()
         {
-            item.width = 34;
-            item.height = 26;
-            item.useAmmo = mod.ItemType<PhotoBlank>();
-            item.UseSound = new LegacySoundStyle(SoundID.Camera, 0);
+            Item.width = 34;
+            Item.height = 26;
+            Item.useAmmo = ModContent.ItemType<PhotoBlank>();
+            Item.UseSound = SoundID.Camera;
 
-            item.useStyle = 4;
-            item.useAnimation = 40;
-            item.useTime = 40;
+            Item.useStyle = 4;
+            Item.useAnimation = 40;
+            Item.useTime = 40;
 
-            item.rare = 2;
-            item.value = Item.buyPrice(0, 3, 0, 0);
+            Item.rare = 2;
+            Item.value = Item.buyPrice(0, 3, 0, 0);
         }
 
         // Flashing effect
@@ -40,7 +40,7 @@ namespace ExpeditionsContent.Items.QuestItems
         {
             if (player.itemAnimation > 0)
             {
-                float brightness = (float)player.itemAnimation / player.itemAnimationMax;
+                float brightness = (float)player.itemAnimation / Item.useAnimation;
                 Lighting.AddLight(player.Top,
                     brightness * 1f,
                     brightness * 0.9f,
@@ -51,16 +51,16 @@ namespace ExpeditionsContent.Items.QuestItems
         // This works because UI layer;
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            PhotoCamera.DrawCameraFrame(spriteBatch, item, frameWidth, frameHeight);
+            PhotoCamera.DrawCameraFrame(spriteBatch, Item, frameWidth, frameHeight);
         }
 
-        public override bool UseItem(Player player)
+        public override bool? UseItem(Player player)
         {
             Lighting.AddLight(player.Top,
                 1f,
                 0.9f,
                 0.8f);
-            return PhotoCamera.TakePhoto(player, item, frameWidth, frameHeight, maxFreeCapture);
+            return PhotoCamera.TakePhoto(player, Item, frameWidth, frameHeight, maxFreeCapture);
         }
 
         #region Static Methods
@@ -106,15 +106,16 @@ namespace ExpeditionsContent.Items.QuestItems
             foreach (NPC n in Main.npc)
             {
                 if (!n.active) continue;
-                if (cameraFrame.Intersects(n.getRect()))
+                if (cameraFrame.Intersects(n.Hitbox))
                 {
                     // Can't take pictures if too dark
                     Point centre = n.Center.ToTileCoordinates();
-                    int darkness = Lighting.GetBlackness(centre.X, centre.Y).A;
+                    Color lightColor = Lighting.GetColor(centre.X, centre.Y);
+                    int darkness = 255 - (lightColor.R + lightColor.G + lightColor.B) / 3;
                     if (darkness > 240)
                     {
                         // too dark, if player can see below that range
-                        if (npc.Distance(player.Center) > range ||
+                        if (n.Distance(player.Center) > range ||
                             !Collision.CanHit(npc.position, npc.width, npc.height,
                             player.position, player.width, player.height))
                         {
@@ -148,7 +149,7 @@ namespace ExpeditionsContent.Items.QuestItems
             if (!canTakePicture) return true;
 
             // Spawn the item
-            int number = Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height, ExpeditionC.ItemIDPhoto, npc.type, false, -1, false, false);
+            int number = Item.NewItem(player.GetSource_ItemUse(item), (int)player.position.X, (int)player.position.Y, player.width, player.height, ExpeditionC.ItemIDPhoto, npc.type, false, -1, false, false);
 
             // Send the item
             if (Main.netMode == 1)

@@ -26,7 +26,7 @@ namespace ExpeditionsContent.Quests.Clerk
         }
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return API.FindExpedition<SkysTheLimit>(mod).completed;
+            return API.FindExpedition<SkysTheLimit>(Mod).completed;
         }
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {

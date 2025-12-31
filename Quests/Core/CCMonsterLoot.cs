@@ -24,7 +24,7 @@ namespace ExpeditionsContent.Quests.Core
         }
         public override string Description(bool complete)
         {
-            return "If you leave a key of light or night in an empty chest, it will turn into a giant mimic based off the biome the key originated from. These mimics are much more powerful as a result, and should you defeat one you will be rewarded with a rare item. ";
+            return "If you leave a key of light or night in an empty chest, it will turn into a giant mimic based off the biome the key originated from. These mimics are much more powerful as a result, and should you defeat one you will be rewarded with a rare Item. ";
         }
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
@@ -38,7 +38,7 @@ namespace ExpeditionsContent.Quests.Core
             { expedition.conditionDescription2 = ""; }
 
             // Appears once altar smashing turned in chain starts
-            return API.FindExpedition<CBLivingLoot>(mod).completed || cond1;
+            return API.FindExpedition<CBLivingLoot>(Mod).completed || cond1;
         }
 
         public override void OnCombatWithNPC(NPC npc, bool playerGotHit, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

@@ -62,8 +62,8 @@ namespace ExpeditionsContent.Quests.Core
             // Appears during an eclipse, or after other the other two moons are encountered at least once
             // ALSO Must have defeated golem
             return cond1 || (
-                API.FindExpedition<EAPumpkinMoon>(mod).condition1Met &&
-                API.FindExpedition<EAFrostMoon>(mod).condition1Met && 
+                API.FindExpedition<EAPumpkinMoon>(Mod).condition1Met &&
+                API.FindExpedition<EAFrostMoon>(Mod).condition1Met && 
                 NPC.downedGolemBoss);
         }
 

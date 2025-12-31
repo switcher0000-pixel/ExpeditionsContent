@@ -27,7 +27,7 @@ namespace ExpeditionsContent.Quests.Core
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return API.FindExpedition<ABStartTown>(mod).completed;
+            return API.FindExpedition<ABStartTown>(Mod).completed;
         }
         
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCont)
@@ -36,10 +36,10 @@ namespace ExpeditionsContent.Quests.Core
             {
                 if (Main.time % 60 == 0)
                 {
-                    // Code from FindSpawn() in player.cs
+                    // Code from FindSpawn() in Player.cs
                     for (int i = 0; i < 200; i++)
                     {
-                        if (player.spN[i] == null) 
+                        if (player.spN[i] == null)
                         {
                             // Reached the end of array
                             cond1 = false;

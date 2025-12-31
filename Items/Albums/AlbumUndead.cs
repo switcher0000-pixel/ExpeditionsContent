@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Risen from the Grave, 1st ed.");
-            Tooltip.SetDefault("'It contains photos of zombies with rotten fashion sense'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
+            // DisplayName.SetDefault("Risen from the Grave, 1st ed.");
+            // Tooltip.SetDefault("'It contains photos of zombies with rotten fashion sense'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
         }
         public override void SetDefaults()
         {

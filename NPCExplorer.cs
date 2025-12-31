@@ -1,3 +1,4 @@
+using Terraria.GameContent;
 ﻿using System;
 
 using Microsoft.Xna.Framework;
@@ -20,7 +21,7 @@ namespace ExpeditionsContent
         {
             if (npc.type == NPCID.Guide &&
                 !Main.hardMode &&
-                !API.FindExpedition<Quests.Core.AAWelcomeQuest>(mod).completed
+                !API.FindExpedition<Quests.Core.AAWelcomeQuest>(Mod).completed
                 )
             {
                 if (Main.dayTime)
@@ -41,24 +42,24 @@ namespace ExpeditionsContent
             moonlight = false;
         }
 
-        public override bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
-        {
-            int tempDefence = 0;
-            if (moonlight) tempDefence -= 10;
-            if (tempDefence != 0)
-            {
-                double currentDamage = Main.CalculateDamage((int)damage, defense);
-                double modifiedDamage = Main.CalculateDamage((int)damage, Math.Max(0, defense + tempDefence));
-                damage += modifiedDamage - currentDamage;
-            }
-            return true;
-        }
+//         public override bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+//         {
+//             int tempDefence = 0;
+//             if (moonlight) tempDefence -= 10;
+//             if (tempDefence != 0)
+//             {
+//                 double currentDamage = Main.CalculateDamage((int)damage, defense);
+//                 double modifiedDamage = Main.CalculateDamage((int)damage, Math.Max(0, defense + tempDefence));
+//                 damage += modifiedDamage - currentDamage;
+//             }
+//             return true;
+//         }
 
-        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (moonlight)
             {
-                Texture2D texture = Main.goreTexture[mod.GetGoreSlot("Gores/Moonlight")];
+                Texture2D texture = ModContent.Request<Texture2D>("ExpeditionsContent/Gores/Moonlight").Value;
                 float scale = 0.8f * npc.scale * Math.Max(npc.width, npc.height) / 56f;
                 if (scale <= 0.1f) scale = 0.1f;
                 if (scale > 3) scale = 3 + (scale - 3) / 2;

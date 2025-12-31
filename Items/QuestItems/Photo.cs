@@ -1,3 +1,4 @@
+using Terraria.GameContent;
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -26,27 +28,27 @@ namespace ExpeditionsContent.Items.QuestItems
                 if (npcTexture == null)
                 {
                     // Don't try setting up if the photo is not normal
-                    if (item.prefix == 0)
+                    if (Item.prefix == 0)
                     {
                         try
                         {
                             if (Main.netMode != 2)
                             {
-                                npcTexture = Main.npcTexture[item.stack];
+                                npcTexture = TextureAssets.Npc[Item.stack].Value;
                             }
                         }
                         catch
                         {
                             // NPC at this id doesn't exist
-                            npcTexture = Main.magicPixel;
+                            npcTexture = TextureAssets.MagicPixel.Value;
                         }
                     }
                     // Set photo info
                     SetNameAndMod();
                 }
 
-                // Give a magic pixel until mod photo can be resolved
-                if (item.prefix == ignorantPrefix) return Main.magicPixel;
+                // Give a magic pixel until Mod photo can be resolved
+                if (Item.prefix == ignorantPrefix) return TextureAssets.MagicPixel.Value;
 
                 return npcTexture;
             }
@@ -54,42 +56,38 @@ namespace ExpeditionsContent.Items.QuestItems
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Photo Film");
-            Tooltip.SetDefault("Used in conjuction with a camera\n"
-                + "<right> to clear the image");
+            // DisplayName.SetDefault("Photo Film");
+            // Tooltip.SetDefault("Used in conjuction with a camera\n" + "<right> to clear the image");
         }
         public override void SetDefaults()
         {
-            item.width = 28;
-            item.height = 28;
-            item.rare = 0;
-            item.value = Item.buyPrice(0, 0, 0, 0);
+            Item.width = 28;
+            Item.height = 28;
+            Item.rare = 0;
+            Item.value = Item.buyPrice(0, 0, 0, 0);
 
             npcName = "";
             npcMod = "";
             npcTexture = null;
         }
-        public override TagCompound Save()
+        public override void SaveData(TagCompound tag)
         {
-            return new TagCompound
-            {
-                { "npcName", npcName },
-                { "npcMod", npcMod }
-            };
+            tag["npcName"] = npcName;
+            tag["npcMod"] = npcMod;
         }
-        public override void Load(TagCompound tag)
+        public override void LoadData(TagCompound tag)
         {
             npcName = tag.GetString("npcName");
             npcMod = tag.GetString("npcMod");
             npcTexture = null;
 
             // Set the photo to the item stack of this NPC
-            // In case the mod order shuffled around or something
+            // In case the Mod order shuffled around or something
             Mod loadMod = ModLoader.GetMod(npcMod);
             if (loadMod != null)
             {
                 // Mod found!
-                item.prefix = ignorantPrefix; 
+                Item.prefix = ignorantPrefix; 
                 //ignorant lmao, just so the other method can assign it
             }
             else
@@ -98,12 +96,12 @@ namespace ExpeditionsContent.Items.QuestItems
                 {
                     // Vanilla NPC so yeah
                     NPC npc = GenerateNPC();
-                    item.stack = npc.type;
+                    Item.stack = npc.type;
                 }
                 // NPC is unloaded
                 else
                 {
-                    item.prefix = brokenPrefix;
+                    Item.prefix = brokenPrefix;
                 }
             }
         }
@@ -117,8 +115,8 @@ namespace ExpeditionsContent.Items.QuestItems
             try
             {
                 NPC n = new NPC();
-                n.SetDefaults(item.stack);
-                if (n.modNPC != null) n.modNPC.SetDefaults();
+                n.SetDefaults(Item.stack);
+                if (n.ModNPC != null) n.ModNPC.SetDefaults();
                 if (n.townNPC)
                 {
                     // Get the actual town NPC if they exist already
@@ -133,7 +131,7 @@ namespace ExpeditionsContent.Items.QuestItems
             }
             catch (Exception e)
             {
-                // Main.NewText("Gen " + item.stack + ": " + e.ToString());
+                // Main.NewText("Gen " + Item.stack + ": " + e.ToString());
             }
             return null;
         }
@@ -142,66 +140,66 @@ namespace ExpeditionsContent.Items.QuestItems
         /// </summary>
         public void SetNameAndMod()
         {
-            if(item.prefix == ignorantPrefix)
+            if(Item.prefix == ignorantPrefix)
             {
-                // This is a 1 stack item that got loaded via a mod
+                // This is a 1 stack item that got loaded via a Mod
                 // So we have to find where it is and re-set it.
-                item.prefix = 0;
+                Item.prefix = 0;
                 Mod loadMod = ModLoader.GetMod(npcMod);
-                item.stack = loadMod.NPCType(npcName);
+                Item.stack = ModContent.Find<ModNPC>(npcMod, npcName).Type;
             }
 
             // Get NPC from the stack
             NPC npc = GenerateNPC();
 
             // Early stop, if this NPC doesn't exist or photo is broken
-            if (npc == null || item.prefix == brokenPrefix)
+            if (npc == null || Item.prefix == brokenPrefix)
             {
-                item.SetNameOverride("Photo"); //With 'Damaged' prefix
-                item.stack = 1;
-                item.prefix = brokenPrefix;
+                Item.SetNameOverride("Photo"); //With 'Damaged' prefix
+                Item.stack = 1;
+                Item.prefix = brokenPrefix;
                 return;
             }
 
             // Save the name of the NPC
             npcName = npc.TypeName;
             npcMod = "VANILLA";
-            if (npc.modNPC != null) // Non-vanilla
+            if (npc.ModNPC != null) // Non-vanilla
             {
-                npcName = npc.modNPC.GetType().Name; // Use mods
-                npcMod = npc.modNPC.mod.Name;
+                npcName = npc.ModNPC.GetType().Name; // Use mods
+                npcMod = npc.ModNPC.Mod.Name;
             }
 
             // Set photo info
             if (npc.townNPC)
-            { item.SetNameOverride("Photo of " + npc.GivenName + ", no."); }
+            { Item.SetNameOverride("Photo of " + npc.GivenName + ", no."); }
             else
             {
                 if (npc.type == 1)
                 {
                     // Slimes are just slimes
-                    item.SetNameOverride( "Photo of " + Lang.GetNPCName(NPCID.SlimeRibbonWhite) + ", no. (1)");
+                    Item.SetNameOverride( "Photo of " + Lang.GetNPCName(NPCID.SlimeRibbonWhite) + ", no. (1)");
                 }
                 else
                 {
-                    item.SetNameOverride("Photo of " + npc.TypeName + ", no.");
+                    Item.SetNameOverride("Photo of " + npc.TypeName + ", no.");
                     // If a more specialised name exists, use that instead.
                     if(npc.GivenName.Length >= npc.TypeName.Length)
                     {
-                        item.SetNameOverride("Photo of " + npc.GivenName + ", no.");
+                        Item.SetNameOverride("Photo of " + npc.GivenName + ", no.");
                     }
                 }
             }
 
             // Set stack
-            item.maxStack = item.stack;
+            Item.maxStack = Item.stack;
 
             // Set photo rarity
-            item.rare = 0;
-            if (npc.defense >= 16) item.rare = 4;
+            Item.rare = 0;
+            if (npc.defense >= 16) Item.rare = 4;
             if (npc.boss || npc.townNPC)
             {
-                item.rare++;
+                Item.rare++;
             }
         }
 
@@ -209,17 +207,17 @@ namespace ExpeditionsContent.Items.QuestItems
         {
             if(npcName != "")
             {
-                if (item.prefix == brokenPrefix)
+                if (Item.prefix == brokenPrefix)
                 {
                     tooltips.Clear();
                     if (npcMod != "")
                     {
-                        tooltips.Add(new TooltipLine(mod, "PhotoImageUnloaded", "The image is clouded beyond recognition"));
-                        tooltips.Add(new TooltipLine(mod, "PhotoImageMod", "Mod: " + npcMod));
+                        tooltips.Add(new TooltipLine(Mod, "PhotoImageUnloaded", "The image is clouded beyond recognition"));
+                        tooltips.Add(new TooltipLine(Mod, "PhotoImageMod", "Mod: " + npcMod));
                     }
                     else
                     {
-                        tooltips.Add(new TooltipLine(mod, "PhotoImageMissing", "The image is damaged beyond repair"));
+                        tooltips.Add(new TooltipLine(Mod, "PhotoImageMissing", "The image is damaged beyond repair"));
                     }
                 }
                 else
@@ -236,7 +234,7 @@ namespace ExpeditionsContent.Items.QuestItems
         private Rectangle CalculateSourceRectangle()
         {
             // Make rectangle of first frame and get the centre point
-            int frames = Main.npcFrameCount[item.stack];
+            int frames = Main.npcFrameCount[Item.stack];
             Rectangle rect = new Rectangle(
                 0, 0, NpcTexture.Width,
                 NpcTexture.Height / frames);
@@ -262,8 +260,8 @@ namespace ExpeditionsContent.Items.QuestItems
         }
         public override void RightClick(Player player)
         {
-            item.SetDefaults();
-            player.QuickSpawnItem(mod.ItemType<PhotoBlank>());
+            Item.SetDefaults();
+            player.QuickSpawnItem(player.GetSource_OpenItem(Item.type), ModContent.ItemType<PhotoBlank>());
         }
 
         // Draw
@@ -292,11 +290,11 @@ namespace ExpeditionsContent.Items.QuestItems
 
             spriteBatch.Draw(
                 NpcTexture,
-                item.Center - Main.screenPosition,
+                Item.Center - Main.screenPosition,
                 rect,
                 lightColor,
                 rotation,
-                item.Size / 2 + new Vector2(2, 6),
+                Item.Size / 2 + new Vector2(2, 6),
                 scale / 2,
                 SpriteEffects.None, 0);
         }

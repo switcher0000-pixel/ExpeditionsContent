@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -25,19 +26,19 @@ namespace ExpeditionsContent.Quests.Clerk
         public override void AddItemsOnLoad()
         {
             AddDeliverableAnyOf(new int[] {
-                mod.ItemType<Items.Albums.AlbumCorruption>(),
-                mod.ItemType<Items.Albums.AlbumCrimson>()});
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumSlimes2>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumFairy>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumMushroom>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumUndead3>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumDemons2>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumAnimals3>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumRare>());
+                ModContent.ItemType<Items.Albums.AlbumCorruption>(),
+                ModContent.ItemType<Items.Albums.AlbumCrimson>()});
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumSlimes2>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumFairy>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumMushroom>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumUndead3>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumDemons2>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumAnimals3>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumRare>());
 
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType<Items.Moonstone.LootBagMoonstone>(), 1, true);
-            AddRewardItem(mod.ItemType<Items.Albums.AlbumPredators3>());
+            AddRewardItem(ModContent.ItemType<Items.Moonstone.LootBagMoonstone>(), 1, true);
+            AddRewardItem(ModContent.ItemType<Items.Albums.AlbumPredators3>());
         }
         public override string Description(bool complete)
         {
@@ -51,7 +52,7 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumOmnibus2>(mod).completed // Completed the second tier
+            return (API.FindExpedition<AlbumOmnibus2>(Mod).completed // Completed the second tier
                 )
                 || expedition.conditionCounted > 0; // Already done (repeatable)
         }

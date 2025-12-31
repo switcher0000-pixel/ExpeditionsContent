@@ -1,3 +1,4 @@
+using Terraria.GameContent;
 ﻿using System;
 using System.Collections.Generic;
 
@@ -23,16 +24,16 @@ namespace ExpeditionsContent
 
         public bool moonlit;
 
-        public static bool HoldingCamera(Mod mod)
+        public static bool HoldingCamera(Mod Mod)
         {
             return
-                API.InInventory[mod.ItemType<Items.QuestItems.PhotoCamera>()] ||
-                API.InInventory[mod.ItemType<Items.QuestItems.PhotoCamPro>()];
+                API.InInventory[ModContent.ItemType<Items.QuestItems.PhotoCamera>()] ||
+                API.InInventory[ModContent.ItemType<Items.QuestItems.PhotoCamPro>()];
         }
 
-        public static PlayerExplorer Get(Player player, Mod mod)
+        public static PlayerExplorer Get(Player player)
         {
-            return player.GetModPlayer<PlayerExplorer>(mod);
+            return player.GetModPlayer<PlayerExplorer>();
         }
 
         public override void Initialize()
@@ -57,7 +58,7 @@ namespace ExpeditionsContent
             TryTelescope();
         }
 
-        public override void OnEnterWorld(Player player)
+        public override void OnEnterWorld()
         {
             ModMapController.FullMapInitialise();
         }
@@ -69,33 +70,33 @@ namespace ExpeditionsContent
             // ShareTeamInfo();
 
             /*
-            if (player.controlHook && player.releaseHook)
+            if (Player.controlHook && Player.releaseHook)
             {
                 Tile t = Main.tile[
                     (int)(Main.mouseX + Main.screenPosition.X) / 16,
                     (int)(Main.mouseY + Main.screenPosition.Y) / 16];
-                Main.NewText("Tile @ Mouse = " + t.type + " with frame: " + t.frameX + "|" + t.frameY);
+                Main.NewText("Tile @ Mouse = " + t.TileType + " with frame: " + t.TileFrameX + "|" + t.TileFrameY);
             }
             */
         }
 
         private void ShareTeamInfo()
         {
-            if (Main.netMode == 1 && player.whoAmI == Main.myPlayer)
+            if (Main.netMode == 1 && Player.whoAmI == Main.myPlayer)
             {
                 for (int n = 0; n < 255; n++)
                 {
-                    if (n != player.whoAmI && Main.player[n].active && !Main.player[n].dead && Main.player[n].team == player.team && Main.player[n].team != 0)
+                    if (n != Player.whoAmI && Main.player[n].active && !Main.player[n].dead && Main.player[n].team == Player.team && Main.player[n].team != 0)
                     {
                         int num = 800;
-                        if ((Main.player[n].Center - player.Center).Length() < (float)num)
+                        if ((Main.player[n].Center - Player.Center).Length() < (float)num)
                         {
                             // In range
-                            if (Get(player, mod).accHeartCompass)
+                            if (Get(Main.player[n]).accHeartCompass)
                             {
                                 accHeartCompass = true;
                             }
-                            if (Get(player, mod).accFruitCompass)
+                            if (Get(Main.player[n]).accFruitCompass)
                             {
                                 accFruitCompass = true;
                             }
@@ -108,10 +109,9 @@ namespace ExpeditionsContent
         private const int telescopeRange = 2;
         private void TryTelescope()
         {
-            Point p = player.Top.ToTileCoordinates();
-            int tele = mod.TileType<Tiles.Telescope>();
-            if (Main.screenTileCounts[tele] == 0) return;
-
+            Point p = Player.Top.ToTileCoordinates();
+            int tele = ModContent.TileType<Tiles.Telescope>();
+            // Check for telescope in range
             try
             {
                 for (int y = -telescopeRange; y < telescopeRange + 1; y++)
@@ -119,10 +119,10 @@ namespace ExpeditionsContent
                     for (int x = -telescopeRange; x < telescopeRange + 1; x++)
                     {
                         Tile t = Main.tile[p.X + x, p.Y + y];
-                        if (t.type == tele)
+                        if (t.TileType == tele)
                         {
-                            player.scope = true;
-                            if (player.ZoneOverworldHeight || player.ZoneSkyHeight)
+                            Player.scope = true;
+                            if (Player.ZoneOverworldHeight || Player.ZoneSkyHeight)
                             {
                                 stargazer = true;
                             }
@@ -138,15 +138,15 @@ namespace ExpeditionsContent
         {
             if (moonlit)
             {
-                player.statDefense -= 10;
+                Player.statDefense -= 10;
             }
         }
-        public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             if(moonlit)
             {
-                Texture2D moonlight = Main.goreTexture[mod.GetGoreSlot("Gores/Moonlight")];
-                Main.spriteBatch.Draw(moonlight, player.Center - Main.screenPosition, null,
+                Texture2D moonlight = ModContent.Request<Texture2D>("ExpeditionsContent/Gores/Moonlight").Value;
+                Main.spriteBatch.Draw(moonlight, Player.Center - Main.screenPosition, null,
                     new Color(1f, 1f, 1f, 0.3f), 0, new Vector2(moonlight.Width, moonlight.Height) / 2, 1f,
                     SpriteEffects.None, 0f);
             }

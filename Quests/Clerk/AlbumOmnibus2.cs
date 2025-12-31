@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -23,16 +24,16 @@ namespace ExpeditionsContent.Quests.Clerk
         }
         public override void AddItemsOnLoad()
         {
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumPredators>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumCavern>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumUndead2>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumSnow>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumAntlion>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumBee>());
-            AddDeliverable(mod.ItemType<Items.Albums.AlbumFlora>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumPredators>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumCavern>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumUndead2>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumSnow>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumAntlion>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumBee>());
+            AddDeliverable(ModContent.ItemType<Items.Albums.AlbumFlora>());
 
             AddRewardItem(API.ItemIDExpeditionCoupon, 1, true);
-            AddRewardItem(mod.ItemType<Items.Albums.AlbumPredators2>());
+            AddRewardItem(ModContent.ItemType<Items.Albums.AlbumPredators2>());
         }
         public override string Description(bool complete)
         {
@@ -45,7 +46,7 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumOmnibus1>(mod).completed)
+            return (API.FindExpedition<AlbumOmnibus1>(Mod).completed)
                 || expedition.conditionCounted > 0;
         }
 

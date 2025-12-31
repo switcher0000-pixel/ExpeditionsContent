@@ -7,10 +7,9 @@ namespace ExpeditionsContent.Buffs
     class MoonlightBuff : ModBuff
     {
         public Vector2 dustDisplace = new Vector2(0, -2);
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Guiding Moonlight");
-            Description.SetDefault("Movement speed increased and provides life regeneration");
+            // DisplayName.SetDefault("Guiding Moonlight");
         }
 
         public override void Update(NPC npc, ref int buffIndex)
@@ -40,7 +39,7 @@ namespace ExpeditionsContent.Buffs
                 }
                 else
                 {
-                    Dust d = Main.dust[Dust.NewDust(player.TopLeft + dustDisplace, 
+                    Dust d = Main.dust[Dust.NewDust(player.TopLeft + dustDisplace,
                         player.width, 1, 264, 0f, -2f, 0, default(Color), 0.7f)];
                     d.noGravity = true;
                 }

@@ -36,7 +36,7 @@ namespace ExpeditionsContent.Quests.Core
             // Only appears until hardmode, or is done already
             if (!expedition.completed && Main.hardMode) return false;
 
-            return API.FindExpedition<ACUnderground>(mod).completed;
+            return API.FindExpedition<ACUnderground>(Mod).completed;
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

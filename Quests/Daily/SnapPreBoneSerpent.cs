@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -24,7 +25,7 @@ namespace ExpeditionsContent.Quests.Daily
         public override void AddItemsOnLoad()
         {
             AddRewardItem(API.ItemIDExpeditionCoupon);
-            AddRewardItem(mod.ItemType<Items.QuestItems.PhotoBlank>(), 3);
+            AddRewardItem(ModContent.ItemType<Items.QuestItems.PhotoBlank>(), 3);
         }
         public override string Description(bool complete)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.ID;
 using Expeditions;
 
@@ -41,7 +42,7 @@ namespace ExpeditionsContent.Quests.Clerk
         {
             if(expedition.condition1Met)
             {
-                if (!expedition.condition2Met) expedition.condition2Met = item.summon;
+                if (!expedition.condition2Met) expedition.condition2Met = item.CountsAsClass(DamageClass.Summon);
             }
         }
 

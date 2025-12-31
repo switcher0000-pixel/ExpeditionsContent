@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Arctic Animals, 1st ed.");
-            Tooltip.SetDefault("'It contains frosted photos of furry foes'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
+            // DisplayName.SetDefault("Arctic Animals, 1st ed.");
+            // Tooltip.SetDefault("'It contains frosted photos of furry foes'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 3, 0, 0)));
         }
         public override void SetDefaults()
         {

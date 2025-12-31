@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -19,7 +20,7 @@ namespace ExpeditionsContent.Quests.MiscHard
         {
             AddDeliverable(ItemID.PharaohsMask, 1);
 
-            AddRewardItem(mod.ItemType<Items.QuestItems.BrassCoin>(), 1);
+            AddRewardItem(ModContent.ItemType<Items.QuestItems.BrassCoin>(), 1);
         }
         public override string Description(bool complete)
         {
@@ -30,8 +31,8 @@ namespace ExpeditionsContent.Quests.MiscHard
         {
             if(!cond1)
             {
-                cond1 = player.ZoneDesert && (
-                    Main.screenTileCounts[TileID.SandstoneBrick] > 1 );
+                // Check if player is in desert (underground desert/pyramid)
+                cond1 = player.ZoneDesert && player.adjTile[TileID.SandstoneBrick];
             }
             return cond1;
         }

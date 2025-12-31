@@ -1,8 +1,10 @@
+using Terraria.Audio;
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExpeditionsContent.Items.Wayfarer
 {
@@ -10,35 +12,35 @@ namespace ExpeditionsContent.Items.Wayfarer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wayfarer's Subber");
-            Tooltip.SetDefault("50% chance not to consume ammo\n"
-                + "'Spray and pray'");
+            // DisplayName.SetDefault("Wayfarer's Subber");
+            // Tooltip.SetDefault("50% chance not to consume ammo\n" + "'Spray and pray'");
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.Minishark);
-            item.width = 42;
-            item.height = 24;
+            Item.CloneDefaults(ItemID.Minishark);
+            Item.width = 42;
+            Item.height = 24;
 
-            item.UseSound = new LegacySoundStyle(42, 194);
-            item.damage = 4;
-            item.knockBack = 0.5f;
-            item.useAnimation = 5;
-            item.useTime = 5;
-            item.shootSpeed += 2f;
+            Item.UseSound = SoundID.Item42;
+            Item.damage = 4;
+            Item.knockBack = 0.5f;
+            Item.useAnimation = 5;
+            Item.useTime = 5;
+            Item.shootSpeed += 2f;
 
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            Item.value = Item.sellPrice(0, 1, 0, 0);
         }
-        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
         {
-            speedX += Main.rand.NextFloatDirection() * 2f;
-            speedY += Main.rand.NextFloatDirection() * 2f;
-            return true;
+            velocity.X += Main.rand.NextFloatDirection() * 2f;
+            velocity.Y += Main.rand.NextFloatDirection() * 2f;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockBack, player.whoAmI);
+            return false;
         }
-        public override bool ConsumeAmmo(Player player)
-        {
-            return Main.rand.NextBool();
-        }
+
+        // TODO: ConsumeAmmo hook removed in 1.4 for weapons.
+        // Need to implement 50% ammo consumption using new system (possibly CanConsumeAmmo or item stats)
+        // Old code: return Main.rand.NextBool();
 
         public override void HoldItem(Player player)
         {

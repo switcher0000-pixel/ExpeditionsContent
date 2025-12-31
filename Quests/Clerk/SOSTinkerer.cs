@@ -59,7 +59,7 @@ namespace ExpeditionsContent.Quests.Clerk
                 for (int i = 0; i < 200; i++)
                 {
                     if (Main.npc[i].type != NPCID.BoundGoblin) continue;
-                    if(viewRect.Intersects(Main.npc[i].getRect()))
+                    if(viewRect.Intersects(Main.npc[i].Hitbox))
                     {
                         cond1 = true;
                         break;

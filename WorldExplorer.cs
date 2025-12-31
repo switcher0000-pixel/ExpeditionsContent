@@ -7,11 +7,11 @@ using Terraria.ModLoader.IO;
 
 namespace ExpeditionsContent
 {
-    public class WorldExplorer : ModWorld
+    public class WorldExplorer : ModSystem
     {
         public static bool savedClerk = false;
 
-        public override void Initialize()
+        public override void OnWorldLoad()
         {
             if (Main.netMode == 2)
             {
@@ -22,29 +22,23 @@ namespace ExpeditionsContent
             savedClerk = false;
         }
 
-        #region SaveLoard overrides
+        #region SaveLoad overrides
 
-        public override TagCompound Save()
+        public override void SaveWorldData(TagCompound tag)
         {
-            return new TagCompound
-            {
-                { "savedClerk", savedClerk }
-            };
+            tag["savedClerk"] = savedClerk;
         }
 
-        public override void Load(TagCompound tag)
+        public override void LoadWorldData(TagCompound tag)
         {
             savedClerk = tag.GetBool("savedClerk");
         }
 
-        public override void LoadLegacy(BinaryReader reader)
-        {
-            int _version = reader.ReadInt32();
-            // Booleans
-            BitsByte flags = reader.ReadByte();
-            savedClerk = flags[0];
-        }
-
         #endregion
+
+        public override void PostDrawFullscreenMap(ref string mouseText)
+        {
+            ModMapController.DrawFullscreenMap(ref mouseText);
+        }
     }
 }

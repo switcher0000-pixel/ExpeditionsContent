@@ -43,7 +43,7 @@ namespace ExpeditionsContent.Quests.Core
             if (!expedition.completed && NPC.downedMechBossAny) return false;
 
             // Appears once hardmode quest chain starts
-            return API.FindExpedition<CAHardMode>(mod).completed;
+            return API.FindExpedition<CAHardMode>(Mod).completed;
         }
 
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

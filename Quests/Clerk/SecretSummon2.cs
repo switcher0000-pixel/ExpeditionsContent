@@ -27,7 +27,7 @@ namespace ExpeditionsContent.Quests.Clerk
         public override string Description(bool complete)
         {
             if (complete) return "Haha! Thanks to our combined effort, I have made a summon... thing? Well, I think, anyway. Check it out in my shop! It probably works! ";
-            if (API.FindExpedition<SecretSummon>(mod).completed)
+            if (API.FindExpedition<SecretSummon>(Mod).completed)
             {
                 return "You remember that summoning thing you showed me? Well I've just had the craziest idea, but I'll need a few things. Don't ask, it'll make sense. Trust me! It'll be in my shop once it's done. ";
             }

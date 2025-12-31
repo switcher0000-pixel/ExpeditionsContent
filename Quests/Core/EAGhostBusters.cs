@@ -32,7 +32,7 @@ namespace ExpeditionsContent.Quests.Core
             if (!expedition.completed && NPC.downedMoonlord) return false;
 
             // Appears once plantera's curse is lifted
-            return API.FindExpedition<DCPlanterror>(mod).completed;
+            return API.FindExpedition<DCPlanterror>(Mod).completed;
         }
 
         public override void OnCraftItem(Item item, Recipe recipe, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

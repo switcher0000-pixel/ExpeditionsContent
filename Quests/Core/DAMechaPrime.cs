@@ -34,7 +34,7 @@ namespace ExpeditionsContent.Quests.Core
             { expedition.conditionDescription2 = "Defeat Skeletron Prime"; }
 
             // When tracing steps is cleared, or fighting the boss
-            return API.FindExpedition<CBTracingSteps>(mod).completed || cond1 || 
+            return API.FindExpedition<CBTracingSteps>(Mod).completed || cond1 || 
                 NPC.FindFirstNPC(NPCID.SkeletronHead) >= 0;
         }
 

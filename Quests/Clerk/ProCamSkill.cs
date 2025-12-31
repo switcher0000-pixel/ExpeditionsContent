@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Terraria;
 using Terraria.ID;
@@ -24,8 +25,8 @@ namespace ExpeditionsContent.Quests.Clerk
         }
         public override void AddItemsOnLoad()
         {
-            AddRewardItem(mod.ItemType<Items.QuestItems.PhotoCamPro>(), 1);
-            AddRewardItem(mod.ItemType<Items.QuestItems.PhotoBlank>(), 30);
+            AddRewardItem(ModContent.ItemType<Items.QuestItems.PhotoCamPro>(), 1);
+            AddRewardItem(ModContent.ItemType<Items.QuestItems.PhotoBlank>(), 30);
         }
         public override string Description(bool complete)
         {
@@ -39,7 +40,7 @@ namespace ExpeditionsContent.Quests.Clerk
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
-            return (API.FindExpedition<AlbumOmnibus3>(mod).completed // Completed the third tier
+            return (API.FindExpedition<AlbumOmnibus3>(Mod).completed // Completed the third tier
                 && Main.hardMode) //Only after hardmode
                 || expedition.conditionCounted > 0; // Already done (repeatable)
         }

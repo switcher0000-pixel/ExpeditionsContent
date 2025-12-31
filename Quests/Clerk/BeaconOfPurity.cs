@@ -30,7 +30,7 @@ namespace ExpeditionsContent.Quests.Clerk
         {
             if (!cond1)
             {
-                cond1 = (Main.screenTileCounts[TileID.LivingWood] > 128);
+                cond1 = player.adjTile[TileID.LivingWood];
             }
             return cond1;
         }

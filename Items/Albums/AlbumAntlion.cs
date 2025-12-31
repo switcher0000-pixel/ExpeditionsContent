@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Antlion Studies, 1st ed.");
-            Tooltip.SetDefault("'Full of studies and diagrams about Antlions'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("Antlion Studies, 1st ed.");
+            // Tooltip.SetDefault("'Full of studies and diagrams about Antlions'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

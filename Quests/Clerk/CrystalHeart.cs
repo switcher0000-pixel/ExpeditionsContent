@@ -30,7 +30,7 @@ namespace ExpeditionsContent.Quests.Clerk
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             // Only until player has max health
-            return API.FindExpedition<Core.ACUnderground>(mod).completed;
+            return API.FindExpedition<Core.ACUnderground>(Mod).completed;
         }
 
         public override void PostCompleteExpedition()

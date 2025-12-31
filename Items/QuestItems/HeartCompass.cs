@@ -10,26 +10,26 @@ namespace ExpeditionsContent.Items.QuestItems
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Heart Compass");
-            Tooltip.SetDefault("Reveals nearby life crystals on the world map");
+            // DisplayName.SetDefault("Heart Compass");
+            // Tooltip.SetDefault("Reveals nearby life crystals on the world map");
         }
         public override void SetDefaults()
         {
-            item.width = 28;
-            item.height = 30;
-            item.rare = 2;
-            item.accessory = true;
-            item.value = Item.sellPrice(0, 2, 0, 0);
+            Item.width = 28;
+            Item.height = 30;
+            Item.rare = 2;
+            Item.accessory = true;
+            Item.value = Item.sellPrice(0, 2, 0, 0);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            PlayerExplorer.Get(player, mod).accHeartCompass = true;
+            PlayerExplorer.Get(player).accHeartCompass = true;
         }
 
         public override void UpdateInventory(Player player)
         {
-            PlayerExplorer.Get(player, mod).accHeartCompass = true;
+            PlayerExplorer.Get(player).accHeartCompass = true;
         }
 
     }

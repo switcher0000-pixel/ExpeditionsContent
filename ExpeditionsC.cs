@@ -14,14 +14,7 @@ using System.IO;
 namespace ExpeditionsContent {
     public class ExpeditionC : Mod
     {
-        public ExpeditionC()
-        {
-            Properties = new ModProperties()
-            {
-                Autoload = true,
-                AutoloadGores = true
-            };
-        }
+        // ModProperties removed in 1.4 - autoloading is automatic
 
         private static int npcidclerk;
         public static int NPCIDClerk { get { return npcidclerk; } }
@@ -35,12 +28,12 @@ namespace ExpeditionsContent {
 
         public override void Load()
         {
-            npcidclerk = NPCType("Clerk");
-            itemidphoto = ItemType<Items.QuestItems.Photo>();
+            npcidclerk = ModContent.NPCType<NPCs.Clerk>();
+            itemidphoto = ModContent.ItemType<Items.QuestItems.Photo>();
 
             if (Main.netMode != 2)
             {
-                CameraFrameTexture = GetTexture("Gores/CameraFrame");
+                CameraFrameTexture = ModContent.Request<Texture2D>("ExpeditionsContent/Gores/CameraFrame").Value;
             }
 
             ModMapController.FullMapInitialise();
@@ -280,14 +273,12 @@ namespace ExpeditionsContent {
             #endregion
         }
 
-        public override void PostDrawInterface(SpriteBatch spriteBatch)
-        {
-            PhotoManager.ResetFrame();
-        }
+        // PostDrawInterface removed in 1.4 - TODO: Move to appropriate ModSystem hook if needed
+        // public override void PostDrawInterface(SpriteBatch spriteBatch)
+        // {
+        //     PhotoManager.ResetFrame();
+        // }
 
-        public override void PostDrawFullscreenMap(ref string mouseText)
-        {
-            ModMapController.DrawFullscreenMap(this, ref mouseText);
-        }
+        // PostDrawFullscreenMap moved to WorldExplorer ModSystem
     }
 }

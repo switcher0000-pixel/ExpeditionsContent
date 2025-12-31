@@ -7,9 +7,8 @@ namespace ExpeditionsContent.Items.Albums
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Spirits and Demons, 2nd ed.");
-            Tooltip.SetDefault("'It contains terrible signs of evil forces'"
-                + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
+            // DisplayName.SetDefault("Spirits and Demons, 2nd ed.");
+            // Tooltip.SetDefault("'It contains terrible signs of evil forces'" + AlbumAnimalFirst.Value2ToolTip(this, Item.sellPrice(0, 6, 0, 0)));
         }
         public override void SetDefaults()
         {

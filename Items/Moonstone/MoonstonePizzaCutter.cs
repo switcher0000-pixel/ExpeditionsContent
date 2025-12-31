@@ -1,7 +1,9 @@
+using Terraria.GameContent;
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,48 +15,47 @@ namespace ExpeditionsContent.Items.Moonstone
         public static short customGlowMask = 0;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Yutu Domokkon"); //Blame MPTs silly naming convention for this
-            Tooltip.SetDefault("Inflicts enemies with piercing moonlight'");
+            // DisplayName.SetDefault("Yutu Domokkon"); //Blame MPTs silly naming convention for this
+            // Tooltip.SetDefault("Inflicts enemies with piercing moonlight'");
             if (Main.netMode != 2)
             {
-                Texture2D[] glowMasks = new Texture2D[Main.glowMaskTexture.Length + 1];
-                for (int i = 0; i < Main.glowMaskTexture.Length; i++)
+                Asset<Texture2D>[] glowMasks = new Asset<Texture2D>[TextureAssets.GlowMask.Length + 1];
+                for (int i = 0; i < TextureAssets.GlowMask.Length; i++)
                 {
-                    glowMasks[i] = Main.glowMaskTexture[i];
+                    glowMasks[i] = TextureAssets.GlowMask[i];
                 }
-                glowMasks[glowMasks.Length - 1] = mod.GetTexture("Glow/" + this.GetType().Name + "_Glow");
+                glowMasks[glowMasks.Length - 1] = ModContent.Request<Texture2D>("ExpeditionsContent/Glow/" + this.GetType().Name + "_Glow");
                 customGlowMask = (short)(glowMasks.Length - 1);
-                Main.glowMaskTexture = glowMasks;
+                TextureAssets.GlowMask = glowMasks;
             }
         }
         public override void SetDefaults()
         {
-            item.CloneDefaults(ItemID.FieryGreatsword);
-            item.width = 58;
-            item.height = 30;
-            item.scale = 1.1f;
+            Item.CloneDefaults(ItemID.FieryGreatsword);
+            Item.width = 58;
+            Item.height = 30;
+            Item.scale = 1.1f;
 
-            item.damage = 35;
-            item.useAnimation = 35;
-            item.knockBack = 7f;
-            item.autoReuse = true;
+            Item.damage = 35;
+            Item.useAnimation = 35;
+            Item.knockBack = 7f;
+            Item.autoReuse = true;
 
-            item.glowMask = customGlowMask; // See Autoload
-            item.rare = 3;
-            item.value = Item.buyPrice(0, 1, 0, 0);
+            Item.glowMask = customGlowMask; // See Autoload
+            Item.rare = 3;
+            Item.value = Item.buyPrice(0, 1, 0, 0);
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.ItemType<Moonstone>(), 12);
+            Recipe recipe = Recipe.Create(Type);
+            recipe.AddIngredient(ModContent.ItemType<Moonstone>(), 12);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this, 1);
-            recipe.AddRecipe();
+            recipe.Register();
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            float length = 20 + 53f * item.scale;
+            float length = 20 + 53f * Item.scale;
             float radius = 12f;
             float angle = player.itemRotation + (0.785f * player.direction) - 1.57f;
             if (player.gravDir < 0) angle += 1.57f;
@@ -75,13 +76,13 @@ namespace ExpeditionsContent.Items.Moonstone
             }
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(mod.BuffType<Buffs.MoonlightDeBuff>(), ExpeditionC.MoonDebuffTime);
+            target.AddBuff(ModContent.BuffType<Buffs.MoonlightDeBuff>(), ExpeditionC.MoonDebuffTime);
         }
-        public override void OnHitPvp(Player player, Player target, int damage, bool crit)
+        public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo)
         {
-            target.AddBuff(mod.BuffType<Buffs.MoonlightDeBuff>(), 10 * 60);
+            target.AddBuff(ModContent.BuffType<Buffs.MoonlightDeBuff>(), 10 * 60);
         }
     }
 }

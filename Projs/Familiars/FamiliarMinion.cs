@@ -43,29 +43,29 @@ namespace ExpeditionsContent.Projs.Familiars
         public const float quickStopAccel = 0.3f; // Speedup/Slowing down if moving wrong way
         public const float quickStopFastAccel = 0.5f; // Speedup/Slowing down if moving wrong way, if moving faster than normal (see topSpeed)
 
-        /// <summary> Targetting uses player not projectile </summary>
+        /// <summary> Targetting uses player not Projectile </summary>
         public bool AIPrioritiseNearPlayer = false;
         /// <summary> Targetting constantly looks for furthest away enemy </summary>
         public bool AIPrioritiseFarEnemies = false;
 
         public override void AI()
         {
-            Player player = Main.player[projectile.owner];
-            // CHeck if the player still uses projectile minion type
+            Player player = Main.player[Projectile.owner];
+            // CHeck if the player still uses Projectile minion type
             if (!CheckActive(player)) return;
 
             LogicManager(player);
 
             // Set the frames used by the minion
-            ManageFrames(ref projectile.frame, ref projectile.frameCounter);
+            ManageFrames(ref Projectile.frame, ref Projectile.frameCounter);
 
             // Natural "Friction"
-            //projectile.velocity *= 0.99f;
+            //Projectile.velocity *= 0.99f;
 
             if(aiState == 0)
             {
                 // Apply gravity
-                projectile.velocity.Y = Math.Min(projectile.velocity.Y + 0.4f, 10f);
+                Projectile.velocity.Y = Math.Min(Projectile.velocity.Y + 0.4f, 10f);
             }
         }
 
@@ -73,10 +73,10 @@ namespace ExpeditionsContent.Projs.Familiars
         {
             if (!player.active)
             {
-                projectile.active = false;
+                Projectile.active = false;
                 return false;
             }
-            PlayerExplorer modPlayer = player.GetModPlayer<PlayerExplorer>(mod);
+            PlayerExplorer modPlayer = player.GetModPlayer<PlayerExplorer>();
             if (player.dead)
             {
                 modPlayer.familiarMinion = false;
@@ -84,27 +84,27 @@ namespace ExpeditionsContent.Projs.Familiars
             if (modPlayer.familiarMinion)
             {
                 // Minion will disappear 2 frames after bool is false
-                projectile.timeLeft = 2;
+                Projectile.timeLeft = 2;
             }
             return true;
         }
 
         private int aiState
         {
-            get { return (int)projectile.ai[0]; }
-            set { projectile.ai[0] = value; }
+            get { return (int)Projectile.ai[0]; }
+            set { Projectile.ai[0] = value; }
         }
         private int aiAttackAnimation
         {
-            get { return (int)projectile.ai[1]; }
-            set { projectile.ai[01] = value; }
+            get { return (int)Projectile.ai[1]; }
+            set { Projectile.ai[01] = value; }
         }
         private void LogicManager(Player player)
         {
             // Calculate idle positon behind player
             Vector2 goalVector = player.Center;
             goalVector.X -= (15 + player.width / 2) * player.direction;
-            goalVector.X -= projectile.minionPos * 40 * player.direction;
+            goalVector.X -= Projectile.minionPos * 40 * player.direction;
             NPC target = null;
 
             // Find an enemy target
@@ -138,7 +138,7 @@ namespace ExpeditionsContent.Projs.Familiars
             {
                 if (target == null) CheckSeparated(player);
 
-                projectile.tileCollide = true;
+                Projectile.tileCollide = true;
 
                 //!/Main.NewText("ControlMovementPhysics Fine");
                 ControlMovementPhysics(player, goalVector);
@@ -150,13 +150,13 @@ namespace ExpeditionsContent.Projs.Familiars
         private NPC SelectTarget(NPC target)
         {
             // Start with ownerMinion, then cycle through first 200 if not
-            NPC npc = projectile.OwnerMinionAttackTargetNPC;
+            NPC npc = Projectile.OwnerMinionAttackTargetNPC;
             if (npc != null)
             {
                 //!/ Main.NewText("<Fox> Looking at targetted foe!");
-                if (npc.CanBeChasedBy(projectile, false))
+                if (npc.CanBeChasedBy(Projectile, false))
                 {
-                    float distance = (npc.Center - projectile.Center).Length();
+                    float distance = (npc.Center - Projectile.Center).Length();
                     if (distance < targetRange)
                     {
                         target = npc;
@@ -174,15 +174,15 @@ namespace ExpeditionsContent.Projs.Familiars
                 {
                     // Only select if not -1
                     npc = Main.npc[i];
-                    if (npc.CanBeChasedBy(projectile, false))
+                    if (npc.CanBeChasedBy(Projectile, false))
                     {
                         if (AIPrioritiseNearPlayer)
                         {
-                            distance = (npc.Center - Main.player[projectile.owner].Center).Length();
+                            distance = (npc.Center - Main.player[Projectile.owner].Center).Length();
                         }
                         else
                         {
-                            distance = (npc.Center - projectile.Center).Length();
+                            distance = (npc.Center - Projectile.Center).Length();
                         }
                         if (AIPrioritiseFarEnemies)
                         {
@@ -209,9 +209,9 @@ namespace ExpeditionsContent.Projs.Familiars
 
         private void CatchUpWithPlayer(Player player)
         {
-            projectile.tileCollide = false;
+            Projectile.tileCollide = false;
 
-            Vector2 vectorToPlayer = (player.Center - projectile.Center);
+            Vector2 vectorToPlayer = (player.Center - Projectile.Center);
             float distance = vectorToPlayer.Length();
 
             // Get the target accel to reach to catch up to player
@@ -222,14 +222,14 @@ namespace ExpeditionsContent.Projs.Familiars
 
             if (distance < joinDistance && // Within Join distance
                 player.velocity.Y == 0f && //Player is grounded
-                projectile.Center.Y <= player.BottomLeft.Y && // Above the player
-                !Collision.SolidCollision(projectile.position, projectile.width, projectile.height) // Not in a tile
+                Projectile.Center.Y <= player.BottomLeft.Y && // Above the player
+                !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height) // Not in a tile
                 )
             {
                 // Update to 0 and stop gaining height past 6 velocity
                 aiState = 0;
-                projectile.netUpdate = true;
-                projectile.velocity.Y = Math.Max(projectile.velocity.Y, -6f);
+                Projectile.netUpdate = true;
+                Projectile.velocity.Y = Math.Max(Projectile.velocity.Y, -6f);
             }
 
             // Speed up until close enough, if not within join distance
@@ -239,36 +239,36 @@ namespace ExpeditionsContent.Projs.Familiars
                 vectorToPlayer.Normalize();
                 vectorToPlayer *= targetAccel;
 
-                if (projectile.velocity.X < vectorToPlayer.X)
+                if (Projectile.velocity.X < vectorToPlayer.X)
                 {
-                    projectile.velocity.X = projectile.velocity.X + joinAccel;
-                    if (projectile.velocity.X < 0f)
+                    Projectile.velocity.X = Projectile.velocity.X + joinAccel;
+                    if (Projectile.velocity.X < 0f)
                     {
-                        projectile.velocity.X = projectile.velocity.X + joinAccel * 1.5f;
+                        Projectile.velocity.X = Projectile.velocity.X + joinAccel * 1.5f;
                     }
                 }
-                if (projectile.velocity.X > vectorToPlayer.X)
+                if (Projectile.velocity.X > vectorToPlayer.X)
                 {
-                    projectile.velocity.X = projectile.velocity.X - joinAccel;
-                    if (projectile.velocity.X > 0f)
+                    Projectile.velocity.X = Projectile.velocity.X - joinAccel;
+                    if (Projectile.velocity.X > 0f)
                     {
-                        projectile.velocity.X = projectile.velocity.X - joinAccel * 1.5f;
+                        Projectile.velocity.X = Projectile.velocity.X - joinAccel * 1.5f;
                     }
                 }
-                if (projectile.velocity.Y < vectorToPlayer.Y)
+                if (Projectile.velocity.Y < vectorToPlayer.Y)
                 {
-                    projectile.velocity.Y = projectile.velocity.Y + joinAccel;
-                    if (projectile.velocity.Y < 0f)
+                    Projectile.velocity.Y = Projectile.velocity.Y + joinAccel;
+                    if (Projectile.velocity.Y < 0f)
                     {
-                        projectile.velocity.Y = projectile.velocity.Y + joinAccel * 1.5f;
+                        Projectile.velocity.Y = Projectile.velocity.Y + joinAccel * 1.5f;
                     }
                 }
-                if (projectile.velocity.Y > vectorToPlayer.Y)
+                if (Projectile.velocity.Y > vectorToPlayer.Y)
                 {
-                    projectile.velocity.Y = projectile.velocity.Y - joinAccel;
-                    if (projectile.velocity.Y > 0f)
+                    Projectile.velocity.Y = Projectile.velocity.Y - joinAccel;
+                    if (Projectile.velocity.Y > 0f)
                     {
-                        projectile.velocity.Y = projectile.velocity.Y - joinAccel * 1.5f;
+                        Projectile.velocity.Y = Projectile.velocity.Y - joinAccel * 1.5f;
                     }
                 }
             }
@@ -277,7 +277,7 @@ namespace ExpeditionsContent.Projs.Familiars
         {
             if (distance > 2000f)
             {
-                projectile.Center = player.Center;
+                Projectile.Center = player.Center;
                 return true;
             }
             return false;
@@ -285,10 +285,10 @@ namespace ExpeditionsContent.Projs.Familiars
 
         private void ExecuteAttackState()
         {
-            projectile.friendly = true;
+            Projectile.friendly = true;
 
             // Apply gravity
-            projectile.velocity.Y = Math.Min(projectile.velocity.Y + 0.4f, 10f);
+            Projectile.velocity.Y = Math.Min(Projectile.velocity.Y + 0.4f, 10f);
 
             // Count down and end attack state/animation
             aiAttackAnimation--;
@@ -296,8 +296,8 @@ namespace ExpeditionsContent.Projs.Familiars
             {
                 aiAttackAnimation = 0;
                 aiState = 0;
-                projectile.friendly = false;
-                projectile.netUpdate = true;
+                Projectile.friendly = false;
+                Projectile.netUpdate = true;
             }
         }
 
@@ -305,20 +305,20 @@ namespace ExpeditionsContent.Projs.Familiars
         {
             // Define chase range, reduced underground for reasons of space/visibility
             float maxChase = chaseRange;
-            if (projectile.position.Y > Main.worldSurface * 16.0)
+            if (Projectile.position.Y > Main.worldSurface * 16.0)
             { maxChase *= 0.7f; };
 
             // Chase if the enemy is visibly within chase distance
-            Vector2 vectorToNPC = (target.Center - projectile.Center);
+            Vector2 vectorToNPC = (target.Center - Projectile.Center);
             float distance = vectorToNPC.Length();
 
-            //// Check projectile can see the npc
+            //// Check Projectile can see the npc
             bool canHit = Collision.CanHit(
-                projectile.position - new Vector2(0, 4),
-                projectile.width, projectile.height,
+                Projectile.position - new Vector2(0, 4),
+                Projectile.width, Projectile.height,
                 target.position, target.width, target.height);
             //// If can't see the npc, but I'm close to player, carry on.
-            //!/ Main.NewText("<Fam> " + canHit + " & " + Vector2.Distance(projectile.Center, player.Center) + " < " + separatedDistance);
+            //!/ Main.NewText("<Fam> " + canHit + " & " + Vector2.Distance(Projectile.Center, player.Center) + " < " + separatedDistance);
             if (!canHit)
             {
                 // Too far away then go back to player otherwise carry on
@@ -338,40 +338,40 @@ namespace ExpeditionsContent.Projs.Familiars
             {
                 aiState = 2;
                 aiAttackAnimation = attackAnimationMax;
-                projectile.netUpdate = true;
+                Projectile.netUpdate = true;
             }
 
             return goalVector;
         }
         private void JumpToReach(Vector2 goalVector)
         {
-            float jumpDistance = goalVector.Y - projectile.Center.Y;
-            if (projectile.velocity.Y == 0f) // Am grounded
+            float jumpDistance = goalVector.Y - Projectile.Center.Y;
+            if (Projectile.velocity.Y == 0f) // Am grounded
             {
-                if (jumpDistance < -10) projectile.velocity.Y = -6f;
-                if (jumpDistance < -70) projectile.velocity.Y = -10f;
-                if (jumpDistance < -120f) projectile.velocity.Y = -13f;
-                if (jumpDistance < -210f) projectile.velocity.Y = -15f;
-                if (jumpDistance < -270f) projectile.velocity.Y = -17f;
-                if (jumpDistance < -310f) projectile.velocity.Y = -18f;
+                if (jumpDistance < -10) Projectile.velocity.Y = -6f;
+                if (jumpDistance < -70) Projectile.velocity.Y = -10f;
+                if (jumpDistance < -120f) Projectile.velocity.Y = -13f;
+                if (jumpDistance < -210f) Projectile.velocity.Y = -15f;
+                if (jumpDistance < -270f) Projectile.velocity.Y = -17f;
+                if (jumpDistance < -310f) Projectile.velocity.Y = -18f;
             }
         }
         
         private bool CheckSeparated(Player player)
         {
-            float distance = Vector2.Distance(projectile.Center, player.Center);
+            float distance = Vector2.Distance(Projectile.Center, player.Center);
             
             // Too far away, just teleport
             if (!TeleportIfFarAway(player, distance))
             {
                 // Otherwise become seperated, or if flying
                 if (distance > separatedDistance 
-                    || Math.Abs(projectile.Center.Y - player.Center.Y) > 300f
+                    || Math.Abs(Projectile.Center.Y - player.Center.Y) > 300f
                     || player.rocketDelay2 > 0)
                 {
                     aiState = 1;
-                    projectile.netUpdate = true;
-                    projectile.velocity.Y = 0f;
+                    Projectile.netUpdate = true;
+                    Projectile.velocity.Y = 0f;
                     return true;
                 }
             }
@@ -388,19 +388,19 @@ namespace ExpeditionsContent.Projs.Familiars
             // Used for checking for tiles in the way
             bool pathBlocked = false;
 
-            float diffX = goalVector.X - projectile.Center.X;
+            float diffX = goalVector.X - Projectile.Center.X;
             int dirMod = Math.Sign(diffX);
             // Over 5px away
             if (Math.Abs(diffX) > 5f)
             {
                 // Moving backwards fast
-                if (projectile.velocity.X * dirMod < topSpeed)
+                if (Projectile.velocity.X * dirMod < topSpeed)
                 {
-                    projectile.velocity.X += quickStop * dirMod;
+                    Projectile.velocity.X += quickStop * dirMod;
                 }
                 else // Not moving backwards fast, or moving forwards
                 {
-                    projectile.velocity.X += slowStopAccel * dirMod;
+                    Projectile.velocity.X += slowStopAccel * dirMod;
                 }
 
                 pathBlocked = CheckForPathBlocking(pathBlocked, dirMod);
@@ -411,37 +411,37 @@ namespace ExpeditionsContent.Projs.Familiars
             else //Very close to goal
             {
                 // Slowdown, then stop
-                projectile.velocity.X *= 0.9f;
-                if (Math.Abs(projectile.velocity.X) < quickStop * 2f)
+                Projectile.velocity.X *= 0.9f;
+                if (Math.Abs(Projectile.velocity.X) < quickStop * 2f)
                 {
-                    projectile.velocity.X = 0f;
+                    Projectile.velocity.X = 0f;
                 }
             }
 
             // Step up collision physics
-            Collision.StepUp(ref projectile.position, ref projectile.velocity,
-                projectile.width, projectile.height, ref projectile.stepSpeed,
-                ref projectile.gfxOffY, 1, false, 0);
+            Collision.StepUp(ref Projectile.position, ref Projectile.velocity,
+                Projectile.width, Projectile.height, ref Projectile.stepSpeed,
+                ref Projectile.gfxOffY, 1, false, 0);
 
             // Jump over blocked path if grounded
             TryJumpingOverObstacle(pathBlocked, dirMod);
 
             // Clamp velocity X
-            Math.Min(Math.Max(projectile.velocity.X, maxTopSpeed), -maxTopSpeed);
+            Math.Min(Math.Max(Projectile.velocity.X, maxTopSpeed), -maxTopSpeed);
 
             // Set direction
-            projectile.direction = Math.Sign(projectile.velocity.X);
-            if (projectile.velocity.X * dirMod > quickStop * dirMod)
+            Projectile.direction = Math.Sign(Projectile.velocity.X);
+            if (Projectile.velocity.X * dirMod > quickStop * dirMod)
             {
-                projectile.direction = dirMod;
+                Projectile.direction = dirMod;
             }
         }
         private bool CheckForPathBlocking(bool pathBlocked, int direction)
         {
             // Check ahead to see if there is a tile blocking me
-            Point checkTile = Utils.ToTileCoordinates(projectile.Top);
-            checkTile.X += direction + (int)projectile.velocity.X;
-            for (int y = checkTile.Y; y < checkTile.Y + projectile.height / 16 + 1; y++)
+            Point checkTile = Utils.ToTileCoordinates(Projectile.Top);
+            checkTile.X += direction + (int)Projectile.velocity.X;
+            for (int y = checkTile.Y; y < checkTile.Y + Projectile.height / 16 + 1; y++)
             {
                 if (WorldGen.SolidTile(checkTile.X, y))
                 {
@@ -454,13 +454,13 @@ namespace ExpeditionsContent.Projs.Familiars
         }
         private void TryJumpingOverObstacle(bool pathBlocked, int dirMod)
         {
-            if (projectile.velocity.Y == 0f && pathBlocked)
+            if (Projectile.velocity.Y == 0f && pathBlocked)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    Vector2 checkPoint = projectile.position;
-                    checkPoint.X += i * projectile.width / 2;
-                    checkPoint.X += dirMod * 8 + (int)projectile.velocity.X;
+                    Vector2 checkPoint = Projectile.position;
+                    checkPoint.X += i * Projectile.width / 2;
+                    checkPoint.X += dirMod * 8 + (int)Projectile.velocity.X;
                     Point cTile = Utils.ToTileCoordinates(checkPoint);
 
                     /*
@@ -474,41 +474,41 @@ namespace ExpeditionsContent.Projs.Familiars
 
                     // If I need to jump...
                     if (WorldGen.SolidTile(cTile.X, cTile.Y) ||
-                        Main.tile[cTile.X, cTile.Y].halfBrick() ||
-                        Main.tile[cTile.X, cTile.Y].slope() > 0 ||
+                        Main.tile[cTile.X, cTile.Y].IsHalfBlock ||
+                        Main.tile[cTile.X, cTile.Y].Slope > 0 ||
                         (
-                            TileID.Sets.Platforms[(int)Main.tile[cTile.X, cTile.Y].type] &&
-                            Main.tile[cTile.X, cTile.Y].active() && !Main.tile[cTile.X, cTile.Y].inActive()
+                            TileID.Sets.Platforms[(int)Main.tile[cTile.X, cTile.Y].TileType] &&
+                            Main.tile[cTile.X, cTile.Y].HasTile && !Main.tile[cTile.X, cTile.Y].IsActuated
                             ))
                     {
                         try
                         {
-                            cTile = Utils.ToTileCoordinates(projectile.Center);
-                            cTile.X += dirMod + (int)projectile.velocity.X;
+                            cTile = Utils.ToTileCoordinates(Projectile.Center);
+                            cTile.X += dirMod + (int)Projectile.velocity.X;
                             if (!WorldGen.SolidTile(cTile.X, cTile.Y - 1) && !WorldGen.SolidTile(cTile.X, cTile.Y - 2))
                             {
-                                projectile.velocity.Y = -5.1f;
+                                Projectile.velocity.Y = -5.1f;
                             }
                             else if (!WorldGen.SolidTile(cTile.X, cTile.Y - 2))
                             {
-                                projectile.velocity.Y = -7.1f;
+                                Projectile.velocity.Y = -7.1f;
                             }
                             else if (WorldGen.SolidTile(cTile.X, cTile.Y - 5))
                             {
-                                projectile.velocity.Y = -11.1f;
+                                Projectile.velocity.Y = -11.1f;
                             }
                             else if (WorldGen.SolidTile(cTile.X, cTile.Y - 4))
                             {
-                                projectile.velocity.Y = -10.1f;
+                                Projectile.velocity.Y = -10.1f;
                             }
                             else
                             {
-                                projectile.velocity.Y = -9.1f;
+                                Projectile.velocity.Y = -9.1f;
                             }
                         }
                         catch
                         {
-                            projectile.velocity.Y = -9.1f;
+                            Projectile.velocity.Y = -9.1f;
                         }
                     }
                 }
@@ -524,23 +524,23 @@ namespace ExpeditionsContent.Projs.Familiars
             if (aiState == 1)
             {
                 // Face direction of velocity
-                if (projectile.velocity.X != 0f)
+                if (Projectile.velocity.X != 0f)
                 {
-                    projectile.spriteDirection = Math.Sign(projectile.velocity.X);
+                    Projectile.spriteDirection = Math.Sign(Projectile.velocity.X);
                 }
                 // Rotate in travel direction
-                projectile.rotation = projectile.velocity.X * 0.1f * flyRotationMod;
+                Projectile.rotation = Projectile.velocity.X * 0.1f * flyRotationMod;
 
-                if (projectile.frame < flyFrame || projectile.frame > flyFrame + flyFrameCount - 1) projectile.frame = flyFrame;
+                if (Projectile.frame < flyFrame || Projectile.frame > flyFrame + flyFrameCount - 1) Projectile.frame = flyFrame;
                 
-                projectile.frameCounter--;
-                if (projectile.frameCounter <= 0 || projectile.frameCounter > flyFrameSpeed)
+                Projectile.frameCounter--;
+                if (Projectile.frameCounter <= 0 || Projectile.frameCounter > flyFrameSpeed)
                 {
-                    projectile.frame++;
-                    projectile.frameCounter = flyFrameSpeed;
-                    if (projectile.frame > flyFrame + flyFrameCount - 1)
+                    Projectile.frame++;
+                    Projectile.frameCounter = flyFrameSpeed;
+                    if (Projectile.frame > flyFrame + flyFrameCount - 1)
                     {
-                        projectile.frame = flyFrame;
+                        Projectile.frame = flyFrame;
                     }
                 }
             }
@@ -548,64 +548,64 @@ namespace ExpeditionsContent.Projs.Familiars
             // Attacking
             if (aiState == 2)
             {
-                projectile.spriteDirection = projectile.direction;
-                projectile.rotation = 0f;
+                Projectile.spriteDirection = Projectile.direction;
+                Projectile.rotation = 0f;
 
-                if (projectile.frame < attackFrame || projectile.frame > attackFrame + attackFrameCount - 1) projectile.frame = attackFrame;
+                if (Projectile.frame < attackFrame || Projectile.frame > attackFrame + attackFrameCount - 1) Projectile.frame = attackFrame;
 
                 //progress from 0 to 1
                 float progress = 1f - (float)aiAttackAnimation / attackAnimationMax;
                 if (attackFrameCount > 0)
                 {
                     float frameStep = 1f / attackFrameCount;
-                    projectile.frame = attackFrame + (int)(progress / frameStep);
+                    Projectile.frame = attackFrame + (int)(progress / frameStep);
                 }
             }
 
             // Movement + Falling
             if (aiState == 0)
             {
-                projectile.spriteDirection = projectile.direction;
-                projectile.rotation = 0f;
+                Projectile.spriteDirection = Projectile.direction;
+                Projectile.rotation = 0f;
 
                 // Falling, take into account weird slope behaviour
-                if (projectile.velocity.Y != 0f && (projectile.oldVelocity.Y != 0f && projectile.velocity.Y != 0.4f))
+                if (Projectile.velocity.Y != 0f && (Projectile.oldVelocity.Y != 0f && Projectile.velocity.Y != 0.4f))
                 {
-                    if (projectile.frame < fallFrame || projectile.frame > fallFrame + fallFrameCount - 1) projectile.frame = fallFrame;
+                    if (Projectile.frame < fallFrame || Projectile.frame > fallFrame + fallFrameCount - 1) Projectile.frame = fallFrame;
 
-                    projectile.frameCounter--;
-                    if (projectile.frameCounter <= 0 || projectile.frameCounter > fallFrameSpeed)
+                    Projectile.frameCounter--;
+                    if (Projectile.frameCounter <= 0 || Projectile.frameCounter > fallFrameSpeed)
                     {
-                        projectile.frame++;
-                        projectile.frameCounter = fallFrameSpeed;
-                        if (projectile.frame > fallFrame + fallFrameCount - 1)
+                        Projectile.frame++;
+                        Projectile.frameCounter = fallFrameSpeed;
+                        if (Projectile.frame > fallFrame + fallFrameCount - 1)
                         {
-                            projectile.frame = fallFrame;
+                            Projectile.frame = fallFrame;
                         }
                     }
                 }
                 else
                 {
-                    if (projectile.velocity.X == 0f)
+                    if (Projectile.velocity.X == 0f)
                     {
-                        if (projectile.frame < idleFrame || projectile.frame > idleFrame + idleFrameCount - 1) projectile.frame = idleFrame;
+                        if (Projectile.frame < idleFrame || Projectile.frame > idleFrame + idleFrameCount - 1) Projectile.frame = idleFrame;
 
-                        projectile.frame = idleFrame;
+                        Projectile.frame = idleFrame;
                     }
                     else
                     {
-                        if (projectile.frame < runFrame || projectile.frame > runFrame + runFrameCount - 1) projectile.frame = runFrame;
+                        if (Projectile.frame < runFrame || Projectile.frame > runFrame + runFrameCount - 1) Projectile.frame = runFrame;
 
-                        projectile.frameCounter -= (int)Math.Min(
+                        Projectile.frameCounter -= (int)Math.Min(
                             512f,
-                            512f * Math.Abs(projectile.velocity.X * runFrameSpeedMod));
-                        if (projectile.frameCounter <= 0f)
+                            512f * Math.Abs(Projectile.velocity.X * runFrameSpeedMod));
+                        if (Projectile.frameCounter <= 0f)
                         {
-                            projectile.frame++;
-                            projectile.frameCounter = 1024;
-                            if (projectile.frame > runFrame + runFrameCount - 1)
+                            Projectile.frame++;
+                            Projectile.frameCounter = 1024;
+                            if (Projectile.frame > runFrame + runFrameCount - 1)
                             {
-                                projectile.frame = runFrame;
+                                Projectile.frame = runFrame;
                             }
                         }
                     }

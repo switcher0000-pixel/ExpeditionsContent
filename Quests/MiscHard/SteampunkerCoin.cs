@@ -1,3 +1,4 @@
+using Terraria.ModLoader;
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -17,7 +18,7 @@ namespace ExpeditionsContent.Quests.MiscHard
         }
         public override void AddItemsOnLoad()
         {
-            AddDeliverable(mod.ItemType<Items.QuestItems.BrassCoin>(), 1);
+            AddDeliverable(ModContent.ItemType<Items.QuestItems.BrassCoin>(), 1);
 
             AddRewardItem(ItemID.MetalDetector, 1);
         }
@@ -29,7 +30,7 @@ namespace ExpeditionsContent.Quests.MiscHard
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             if (!cond1) cond1 = API.TimeAfternoon && Main.moonPhase == 2;
-            return cond1 && API.FindExpedition<TaxCollectorCoin>(mod).completed;
+            return cond1 && API.FindExpedition<TaxCollectorCoin>(Mod).completed;
         }
     }
 }
