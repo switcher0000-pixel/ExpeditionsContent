@@ -357,3 +357,15 @@ Projectiles: {
 	WayfarerMoonlight.DisplayName: Wayfarer Moonlight
 	WayfarerPike.DisplayName: Wayfarer Pike
 }
+
+Conditions: {
+	QuestCompleted: Mods.ExpeditionsContent.Conditions.QuestCompleted
+	ThreeBosses: Mods.ExpeditionsContent.Conditions.ThreeBosses
+	CorruptionWorld: Mods.ExpeditionsContent.Conditions.CorruptionWorld
+	CrimsonWorld: Mods.ExpeditionsContent.Conditions.CrimsonWorld
+	AnyQuestCompleted: Mods.ExpeditionsContent.Conditions.AnyQuestCompleted
+	QuestAndThreeBosses: Mods.ExpeditionsContent.Conditions.QuestAndThreeBosses
+	QuestAndCorruption: Mods.ExpeditionsContent.Conditions.QuestAndCorruption
+	QuestAndCrimson: Mods.ExpeditionsContent.Conditions.QuestAndCrimson
+	AnyQuestAndThreeBosses: Mods.ExpeditionsContent.Conditions.AnyQuestAndThreeBosses
+}
