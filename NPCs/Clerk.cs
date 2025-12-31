@@ -5,8 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 
 using Expeditions;
+using ExpeditionsContent.Conditions;
 
 namespace ExpeditionsContent.NPCs
 {
@@ -576,20 +578,78 @@ namespace ExpeditionsContent.NPCs
 
         private const bool ShowAll = true;
 
+        /// <summary>
+        /// Helper method to create an item with voucher currency pricing
+        /// </summary>
+        private Item VoucherItem(int itemType, int voucherPrice)
+        {
+            Item item = new Item(itemType);
+            item.shopCustomPrice = voucherPrice;
+            item.shopSpecialCurrency = API.CustomCurrencyIDExpeditionCoupon;
+            return item;
+        }
+
         public override void AddShops()
         {
             var shop = new NPCShop(Type)
-                // Sell book
+                // Basic items (always available, bought with coins)
                 .Add(API.ItemIDExpeditionBook)
-                // Sell Camera and ammo
                 .Add<Items.QuestItems.PhotoCamera>()
-                .Add<Items.QuestItems.PhotoBlank>();
+                .Add<Items.QuestItems.PhotoBlank>()
 
-            // TODO: The old shop used API.AddShopItemVoucher for conditional items based on quest completion.
-            // This needs to be reimplemented using the new Expeditions API and NPCShop conditional system.
-            // The voucher system allowed items to be purchased with expedition vouchers instead of money.
-            // Conditional items include: ProCamera, Telescope, Rusted/Relic Boxes, Heart Compass,
-            // Jungle Eyepiece, Loyalty Badge, Wayfarer weapons, Moonstone items, etc.
+                // Voucher items - Conditional equipment
+                .Add(VoucherItem(ModContent.ItemType<Items.QuestItems.PhotoCamPro>(), 2),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.ProCamSkill>())
+                .Add(VoucherItem(ModContent.ItemType<Items.QuestItems.Telescope>(), 1))
+                .Add(VoucherItem(ModContent.ItemType<Items.Albums.CopyPrint>(), 1))
+
+                // Reward boxes
+                .Add(VoucherItem(API.ItemIDRustedBox, 1))
+                .Add(VoucherItem(API.ItemIDRelicBox, 2), ExpeditionConditions.HardMode)
+
+                // Moonstone loot bag
+                .Add(VoucherItem(ModContent.ItemType<Items.Moonstone.LootBagMoonstone>(), 2),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.AlbumOmnibus3>())
+
+                // Info accessories
+                .Add(VoucherItem(ModContent.ItemType<Items.QuestItems.HeartCompass>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.CrystalHeart>())
+                .Add(VoucherItem(ModContent.ItemType<Items.QuestItems.JungleEyepiece>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.FruitsOfLabour>())
+                .Add(VoucherItem(ModContent.ItemType<Items.QuestItems.LoyaltyBadge>(), 1),
+                    ExpeditionConditions.AnyQuestCompleted<Quests.Clerk.SecretSummon, Quests.Clerk.SecretSummon2>())
+
+                // Wayfarer weapons - Basic set
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerSword>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.WayfarerWeapons>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerPike>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.WayfarerWeapons>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerBow>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.WayfarerWeapons>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerClaymore>(), 1),
+                    ExpeditionConditions.QuestAndThreeBosses<Quests.Clerk.WayfarerWeapons>())
+
+                // Wayfarer guns (world-specific)
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerCarbine>(), 1),
+                    ExpeditionConditions.QuestAndCorruption<Quests.Clerk.WayfererGuns>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerRepeater>(), 1),
+                    ExpeditionConditions.QuestAndCrimson<Quests.Clerk.WayfererGuns>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerSubArm>(), 1),
+                    ExpeditionConditions.QuestAndThreeBosses<Quests.Clerk.WayfererGuns>())
+                .Add(ItemID.MusketBall,
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.WayfererGuns>())
+
+                // Wayfarer magic weapons
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerBook>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.SkysTheLimit>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerStaff>(), 1),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.RoseByAnyName>())
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerBeam>(), 1),
+                    ExpeditionConditions.AnyQuestAndThreeBosses<Quests.Clerk.SkysTheLimit, Quests.Clerk.RoseByAnyName>())
+
+                // Summon weapon
+                .Add(VoucherItem(ModContent.ItemType<Items.Wayfarer.WayfarerSummon>(), 2),
+                    ExpeditionConditions.QuestCompleted<Quests.Clerk.SecretSummon2>());
 
             shop.Register();
         }

@@ -28,9 +28,6 @@ namespace ExpeditionsContent.Items.Wayfarer
             Item.shootSpeed += 2f;
 
             Item.value = Item.sellPrice(0, 1, 0, 0);
-
-            // Wayfarer's Subber has 50% ammo efficiency (consumes only 50% of ammo on average)
-            Item.consumptionRatio = 0.5f;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
         {
@@ -50,6 +47,14 @@ namespace ExpeditionsContent.Items.Wayfarer
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-10, 3);
+        }
+
+        /// <summary>
+        /// 50% chance to not consume ammo - matches the old "50% chance not to consume ammo" tooltip
+        /// </summary>
+        public override bool CanConsumeAmmo(Item ammo, Player player)
+        {
+            return Main.rand.NextBool(2); // 50% chance to consume (50% chance to save)
         }
     }
 }
