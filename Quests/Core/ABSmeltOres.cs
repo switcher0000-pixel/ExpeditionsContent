@@ -22,7 +22,7 @@ namespace ExpeditionsContent.Quests.Core
         }
         public override string Description(bool complete)
         {
-            return "A furnace is required to craft bars from ore. You can craft this from wood, stone and torches while standing near a workbench. Iron and lead bars can be crafted at a workbench to create an anvil, where you can craft armors and weapons. ";
+            return "A furnace is required to craft bars from ore. You can craft this from 4 wood, 20 stone and 3 torches while standing near a workbench. Iron and lead bars can be crafted at a workbench to create an anvil, where you can craft armors and weapons. ";
         }
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
