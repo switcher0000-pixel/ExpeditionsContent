@@ -31,7 +31,7 @@ namespace ExpeditionsContent.Quests.Core
             // Hide if already in hardmode
             if (!expedition.completed && Main.hardMode) return false;
 
-            return API.FindExpedition<ACUnderground>(Mod).completed;
+            return API.FindExpedition<ACFirstDefense>(Mod).completed;
         }
         
         public override void OnCraftItem(Item item, Recipe recipe, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)

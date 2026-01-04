@@ -60,6 +60,7 @@ namespace ExpeditionsContent {
             API.AddExpedition(this, new Quests.Core.ACMakeMagic());
             API.AddExpedition(this, new Quests.Core.ACGearingUp());
             API.AddExpedition(this, new Quests.Core.ACFirstDefense());
+            API.AddExpedition(this, new Quests.Core.ACAlchemist());
             API.AddExpedition(this, new Quests.Core.ACUnderground());
             API.AddExpedition(this, new Quests.Core.ACTownfolk());
             API.AddExpedition(this, new Quests.Core.ACHouseHome());
