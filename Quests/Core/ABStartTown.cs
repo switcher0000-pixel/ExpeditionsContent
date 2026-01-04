@@ -14,7 +14,7 @@ namespace ExpeditionsContent.Quests.Core
             expedition.difficulty = 0;
             expedition.ctgExplore = true;
 
-            expedition.conditionDescription1 = "Attract someone to the town";
+            expedition.conditionDescription1 = "Attract someone to the town (the Guide does not count)";
         }
         public override void AddItemsOnLoad()
         {
@@ -22,7 +22,7 @@ namespace ExpeditionsContent.Quests.Core
         }
         public override string Description(bool complete)
         {
-            return "For people to move into our town, they will of course need a home. A room needs walls, a door, chair, table, and a light source. You can craft all of these at a workbench. \nTip: Toggle 'Smart Cursor' (Ctrl on keyboard, right stick on controller) to auto-place walls. ";
+            return "For people to move into our town, they will need a home. A room needs walls, a door, chair, table, and a light source. You can craft all of these at a workbench. \n\nTips:\n 1. Toggle 'Smart Cursor' (Ctrl on keyboard, right stick on controller) to auto-place walls\n2. Click the House icon near Equipment, and use the ? to check housing suitability ";
         }
 
         public override bool CheckPrerequisites(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
