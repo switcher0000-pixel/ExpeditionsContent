@@ -34,8 +34,8 @@ namespace ExpeditionsContent.Quests.Core
         {
             try
             {
-                // Grappling hook slot is miscEquips[0] in 1.3.
-                cond1 = player.miscEquips[0] != null && !player.miscEquips[0].IsAir;
+                Item hookItem = player.miscEquips[4];
+                cond1 = hookItem != null && hookItem.type != ItemID.None && !hookItem.IsAir;
             }
             catch { cond1 = false; }
             return cond1;
