@@ -179,7 +179,7 @@ namespace ExpeditionsContent
             float dx = topLeft.X - Main.spawnTileX;
             float dy = topLeft.Y - Main.spawnTileY;
             float distance = (float)global::System.Math.Sqrt(dx * dx + dy * dy);
-            float minDistance = (Main.screenWidth / 16f) * 2f;
+            float minDistance = (Main.screenWidth / 16f) * 0.5f;
             if (distance < minDistance) return;
 
             openedNaturalChest = true;
