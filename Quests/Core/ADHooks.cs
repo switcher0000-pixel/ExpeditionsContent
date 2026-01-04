@@ -33,7 +33,10 @@ namespace ExpeditionsContent.Quests.Core
         public override bool CheckConditions(Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             try
-            { cond1 = player.miscEquips[4].createTile > 0; }
+            {
+                // Grappling hook slot is miscEquips[0] in 1.3.
+                cond1 = player.miscEquips[0] != null && !player.miscEquips[0].IsAir;
+            }
             catch { cond1 = false; }
             return cond1;
         }
