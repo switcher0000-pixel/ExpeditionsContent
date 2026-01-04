@@ -58,12 +58,12 @@ namespace ExpeditionsContent {
             API.AddExpedition(this, new Quests.Core.ABStartTown());
             API.AddExpedition(this, new Quests.Core.ABMapping());
             API.AddExpedition(this, new Quests.Core.ACMakeMagic());
+            API.AddExpedition(this, new Quests.Core.ACGearingUp());
             API.AddExpedition(this, new Quests.Core.ACUnderground());
             API.AddExpedition(this, new Quests.Core.ACTownfolk());
             API.AddExpedition(this, new Quests.Core.ACHouseHome());
             API.AddExpedition(this, new Quests.Core.ADHooks());
             API.AddExpedition(this, new Quests.Core.ADLifeCrystals());
-            API.AddExpedition(this, new Quests.Core.ADWizardHat());
             API.AddExpedition(this, new Quests.Core.ADMushrooms());
             API.AddExpedition(this, new Quests.Core.ADKingSlime());
             //Block 2

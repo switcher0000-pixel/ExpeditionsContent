@@ -21,6 +21,8 @@ namespace ExpeditionsContent
         public bool accShrineMap;
         public bool stargazer;
         public bool familiarMinion;
+        public bool openedNaturalChest;
+        private int lastChest = -1;
 
         public bool moonlit;
 
@@ -43,6 +45,8 @@ namespace ExpeditionsContent
             accShrineMap = false;
             stargazer = false;
             familiarMinion = false;
+            openedNaturalChest = false;
+            lastChest = -1;
         }
 
         public override void ResetEffects()
@@ -61,6 +65,8 @@ namespace ExpeditionsContent
         public override void OnEnterWorld()
         {
             ModMapController.FullMapInitialise();
+            openedNaturalChest = false;
+            lastChest = -1;
         }
 
         public override void PostUpdateEquips()
@@ -78,6 +84,11 @@ namespace ExpeditionsContent
                 Main.NewText("Tile @ Mouse = " + t.TileType + " with frame: " + t.TileFrameX + "|" + t.TileFrameY);
             }
             */
+        }
+
+        public override void PostUpdate()
+        {
+            CheckNaturalChestOpen();
         }
 
         private void ShareTeamInfo()
@@ -140,6 +151,38 @@ namespace ExpeditionsContent
             {
                 Player.statDefense -= 10;
             }
+        }
+
+        private void CheckNaturalChestOpen()
+        {
+            if (openedNaturalChest) return;
+            if (Player.chest == -1)
+            {
+                lastChest = -1;
+                return;
+            }
+            if (Player.chest == lastChest) return;
+
+            lastChest = Player.chest;
+
+            int chestX = Player.chestX;
+            int chestY = Player.chestY;
+            if (chestX < 0 || chestY < 0 || chestX >= Main.maxTilesX || chestY >= Main.maxTilesY) return;
+
+            Tile tile = Main.tile[chestX, chestY];
+            if (tile == null || !tile.HasTile) return;
+            if (tile.TileType != TileID.Containers && tile.TileType != TileID.Containers2) return;
+
+            Point topLeft = WorldExplorer.GetChestTopLeft(chestX, chestY);
+            if (WorldExplorer.IsPlayerPlacedChest(topLeft)) return;
+
+            float dx = topLeft.X - Main.spawnTileX;
+            float dy = topLeft.Y - Main.spawnTileY;
+            float distance = (float)global::System.Math.Sqrt(dx * dx + dy * dy);
+            float minDistance = (Main.screenWidth / 16f) * 2f;
+            if (distance < minDistance) return;
+
+            openedNaturalChest = true;
         }
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
