@@ -60,7 +60,7 @@ namespace ExpeditionsContent.Quests.Core
                 }
                 else
                 {
-                    rewardType = ItemID.ClimbingGear;
+                    rewardType = ItemID.TigerClimbingGear;
                 }
             }
 
