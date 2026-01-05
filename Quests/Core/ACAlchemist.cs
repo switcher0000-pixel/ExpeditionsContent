@@ -31,13 +31,16 @@ namespace ExpeditionsContent.Quests.Core
             // Hide if already in hardmode
             if (!expedition.completed && Main.hardMode) return false;
 
-            return API.FindExpedition<ACFirstDefense>(Mod).completed;
+            return API.FindExpedition<ACUnderground>(Mod).completed;
         }
         
         public override void OnCraftItem(Item item, Recipe recipe, Player player, ref bool cond1, ref bool cond2, ref bool cond3, bool condCount)
         {
             if (!expedition.condition1Met)
             {
+                // Exclude Bottled Water - it's a base ingredient, not a real potion
+                if (item.type == ItemID.BottledWater) return;
+                
                 // Check if this is any potion (healing or buff)
                 if (item.consumable && item.buffType > 0)
                 {
