@@ -13,7 +13,7 @@ namespace ExpeditionsContent.Quests.Core
             SetNPCHead(NPCID.Guide, false);
             expedition.difficulty = 3;
             expedition.ctgSlay = true;
-            expedition.ctgImportant = true;
+            // expedition.ctgImportant = true; // Removed - Queen Bee is optional
 
             expedition.conditionDescription1 = "Face the hive guardian";
         }
